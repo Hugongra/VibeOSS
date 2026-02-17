@@ -129,8 +129,8 @@ vibeoss/
 
 ```bash
 # Clone the repository
-git clone https://github.com/vibeoss/vibeoss.git
-cd vibeoss
+git clone https://github.com/Hugongra/VibeOSS.git
+cd VibeOSS
 
 # Install dependencies
 npm install
@@ -188,6 +188,18 @@ Every application in VibeOS is defined by a single JSON document:
 ```
 
 This single document generates: a database table, CRUD API, table view, form, and detail page.
+
+---
+
+## Star History
+
+<a href="https://star-history.com/#Hugongra/VibeOSS&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=Date" />
+ </picture>
+</a>
 
 ---
 
