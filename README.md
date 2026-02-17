@@ -193,13 +193,7 @@ This single document generates: a database table, CRUD API, table view, form, an
 
 ## Star History
 
-<a href="https://star-history.com/#Hugongra/VibeOSS&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=Date" />
- </picture>
-</a>
+[![Star History Chart](https://api.star-history.com/svg?repos=Hugongra/VibeOSS&type=date&legend=top-left)](https://www.star-history.com/#Hugongra/VibeOSS&type=date&legend=top-left)
 
 ---
 
