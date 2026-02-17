@@ -5,7 +5,7 @@
  * Instead of writing React components for every view, VibeOS reads the schema
  * and dynamically selects and configures the appropriate UI component.
  *
- * This is a React Server Component by default (Next.js 15 App Router).
+ * Works as a standard React component — framework-agnostic.
  */
 
 import type {

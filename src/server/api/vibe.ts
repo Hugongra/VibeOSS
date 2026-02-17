@@ -1,9 +1,13 @@
 /**
- * VibeOS — Dynamic API Endpoint
+ * VibeOS — Dynamic API Handler
  *
  * A single entry point that handles intent-based requests.
- * Instead of dozens of REST endpoints, VibeOS uses one intelligent route
- * that interprets the caller's intent and dispatches to the correct handler.
+ * Instead of dozens of REST endpoints, VibeOS uses one intelligent handler
+ * that interprets the caller's intent and dispatches to the correct logic.
+ *
+ * This module is framework-agnostic — it processes a plain request object
+ * and returns a plain response object. Integrate with Express, Fastify,
+ * or any Node.js HTTP server.
  *
  * POST /api/vibe
  *
@@ -14,10 +18,18 @@
  * }
  */
 
-import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { generateSchemaFromIntent } from "@/lib/kernel/schema-generator";
 import { validateVibeSchema } from "@/lib/kernel/validator";
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                             */
+/* ------------------------------------------------------------------ */
+
+interface ApiResponse {
+  status: number;
+  body: Record<string, unknown>;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Request Validation                                                */
@@ -34,21 +46,16 @@ type IntentType = z.infer<typeof intentRequestSchema>["intent"];
 /*  Intent Handlers                                                   */
 /* ------------------------------------------------------------------ */
 
-type IntentHandler = (
-  payload: Record<string, unknown>
-) => Promise<NextResponse>;
+type IntentHandler = (payload: Record<string, unknown>) => Promise<ApiResponse>;
 
 const handlers: Record<IntentType, IntentHandler> = {
-  /**
-   * Generate a new Vibe-JSON schema from natural language.
-   */
   async generate(payload) {
     const prompt = payload.prompt;
     if (typeof prompt !== "string" || prompt.trim().length === 0) {
-      return NextResponse.json(
-        { error: "A non-empty 'prompt' string is required for generation." },
-        { status: 400 }
-      );
+      return {
+        status: 400,
+        body: { error: "A non-empty 'prompt' string is required for generation." },
+      };
     }
 
     const existingEntities = Array.isArray(payload.existingEntities)
@@ -61,84 +68,72 @@ const handlers: Record<IntentType, IntentHandler> = {
     });
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: "Schema generation failed", details: result.errors },
-        { status: 422 }
-      );
+      return {
+        status: 422,
+        body: { error: "Schema generation failed", details: result.errors },
+      };
     }
 
-    return NextResponse.json({
-      success: true,
-      schema: result.schema,
-      tokensUsed: result.tokensUsed,
-    });
+    return {
+      status: 200,
+      body: { success: true, schema: result.schema, tokensUsed: result.tokensUsed },
+    };
   },
 
-  /**
-   * Validate an existing Vibe-JSON schema.
-   */
   async validate(payload) {
     const schema = payload.schema;
     if (!schema || typeof schema !== "object") {
-      return NextResponse.json(
-        { error: "A 'schema' object is required for validation." },
-        { status: 400 }
-      );
+      return {
+        status: 400,
+        body: { error: "A 'schema' object is required for validation." },
+      };
     }
 
     const result = validateVibeSchema(schema);
-    return NextResponse.json(result);
+    return { status: 200, body: result as unknown as Record<string, unknown> };
   },
 
-  /**
-   * Query records from a dynamic entity.
-   * TODO: Implement after database layer is connected.
-   */
   async query(_payload) {
-    return NextResponse.json(
-      {
+    return {
+      status: 501,
+      body: {
         error: "Query intent is not yet implemented.",
         hint: "This will connect to the JSONB storage layer.",
       },
-      { status: 501 }
-    );
+    };
   },
 
-  /**
-   * Create, update, or delete records in a dynamic entity.
-   * TODO: Implement after database layer is connected.
-   */
   async mutate(_payload) {
-    return NextResponse.json(
-      {
+    return {
+      status: 501,
+      body: {
         error: "Mutate intent is not yet implemented.",
         hint: "This will connect to the JSONB storage layer.",
       },
-      { status: 501 }
-    );
+    };
   },
 };
 
 /* ------------------------------------------------------------------ */
-/*  Route Handler                                                     */
+/*  Public API                                                        */
 /* ------------------------------------------------------------------ */
 
-export async function POST(request: NextRequest) {
+/** Handle an intent-based POST request */
+export async function handleVibeRequest(body: unknown): Promise<ApiResponse> {
   try {
-    const body: unknown = await request.json();
     const parsed = intentRequestSchema.safeParse(body);
 
     if (!parsed.success) {
-      return NextResponse.json(
-        {
+      return {
+        status: 400,
+        body: {
           error: "Invalid request format",
           details: parsed.error.issues.map((i) => ({
             path: i.path.join("."),
             message: i.message,
           })),
         },
-        { status: 400 }
-      );
+      };
     }
 
     const { intent, payload } = parsed.data;
@@ -146,20 +141,20 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Internal server error";
-
-    return NextResponse.json({ error: message }, { status: 500 });
+    return { status: 500, body: { error: message } };
   }
 }
 
-/**
- * GET handler — returns API documentation / health check.
- */
-export async function GET() {
-  return NextResponse.json({
-    name: "VibeOS API",
-    version: "0.1.0",
-    status: "operational",
-    intents: ["generate", "query", "mutate", "validate"],
-    docs: "POST a JSON body with { intent, payload } to interact with VibeOS.",
-  });
+/** Health check / API docs */
+export function getVibeInfo(): ApiResponse {
+  return {
+    status: 200,
+    body: {
+      name: "VibeOS API",
+      version: "0.1.0",
+      status: "operational",
+      intents: ["generate", "query", "mutate", "validate"],
+      docs: "POST a JSON body with { intent, payload } to interact with VibeOS.",
+    },
+  };
 }

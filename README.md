@@ -6,7 +6,8 @@
 
 *Describe what you want. Get a working app. Instantly.*
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6-646cff?logo=vite)](https://vite.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://typescriptlang.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-JSONB-336791?logo=postgresql)](https://postgresql.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
@@ -63,7 +64,7 @@ Intent (Natural Language)
 │  SDUI Renderer  │  ← Server-Driven UI Engine
 │ (Component Factory)│
 └────────┬────────┘
-         │ React Server Components
+         │ React Components
          ▼
     Rendered App
 ```
@@ -72,13 +73,13 @@ Intent (Natural Language)
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router, Server Components)
+- **Frontend:** React 19 + Vite 6 + React Router
 - **Language:** TypeScript (strict mode, no `any`)
 - **Database:** PostgreSQL with JSONB for dynamic entities
 - **ORM:** Drizzle ORM
 - **AI:** Vercel AI SDK with OpenAI GPT-4o
 - **Validation:** Zod
-- **UI:** Shadcn/UI + Tailwind CSS
+- **UI:** Shadcn/UI + Tailwind CSS v4
 - **Design:** Dark-mode first, Linear.app aesthetic
 
 ---
@@ -87,11 +88,14 @@ Intent (Natural Language)
 
 ```
 vibeoss/
+├── index.html                  # Vite entry point
+├── vite.config.ts              # Vite + React + Tailwind config
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── api/vibe/           # Intent-based API endpoint
-│   │   ├── layout.tsx          # Root layout
-│   │   └── page.tsx            # Landing page
+│   ├── main.tsx                # React bootstrap
+│   ├── App.tsx                 # Root component + React Router
+│   ├── index.css               # Global styles (dark-first design system)
+│   ├── pages/
+│   │   └── HomePage.tsx        # Landing page
 │   ├── components/
 │   │   └── vibe-ui/            # Server-Driven UI
 │   │       ├── renderer.tsx    # Component selection engine
@@ -100,6 +104,9 @@ vibeoss/
 │   │           ├── vibe-form.tsx
 │   │           ├── vibe-detail.tsx
 │   │           └── vibe-card.tsx
+│   ├── server/
+│   │   └── api/
+│   │       └── vibe.ts         # Intent-based API handler
 │   └── lib/
 │       ├── kernel/             # The "Brain"
 │       │   ├── types.ts        # Vibe-JSON type definitions

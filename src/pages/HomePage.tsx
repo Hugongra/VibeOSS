@@ -1,4 +1,6 @@
-export default function HomePage() {
+import { Link } from "react-router-dom";
+
+export function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[var(--background)] px-6">
       {/* Hero */}
@@ -24,14 +26,14 @@ export default function HomePage() {
         </p>
 
         <div className="flex items-center justify-center gap-4">
-          <a
-            href="/dashboard"
+          <Link
+            to="/dashboard"
             className="inline-flex h-11 items-center rounded-lg bg-[var(--primary)] px-6 text-sm font-medium text-white transition-opacity hover:opacity-90"
           >
             Get Started
-          </a>
+          </Link>
           <a
-            href="https://github.com/vibeoss/vibeoss"
+            href="https://github.com/Hugongra/VibeOSS"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex h-11 items-center rounded-lg border border-[var(--border)] bg-transparent px-6 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
@@ -85,8 +87,8 @@ export default function HomePage() {
                 Render
               </h3>
               <p className="text-sm text-[var(--muted-foreground)]">
-                The Server-Driven UI engine renders a fully functional app from
-                the schema — instantly.
+                The UI engine renders a fully functional app from the schema —
+                instantly.
               </p>
             </div>
           </div>
