@@ -1,0 +1,67 @@
+%% VibeOS — System Flow Diagram
+%% Pipeline: Intent → Schema → UI
+%% 
+%% This diagram illustrates the core data flow of the VibeOS platform,
+%% from natural language input to a fully rendered application.
+
+graph TB
+    subgraph User["🧑 User Layer"]
+        A[Natural Language Intent]
+        B[VibeOS Dashboard]
+    end
+
+    subgraph Kernel["🧠 Kernel (The Brain)"]
+        C[Schema Generator<br/><i>Vercel AI SDK + GPT-4o</i>]
+        D[Vibe Parser<br/><i>JSON Interpretation</i>]
+        E[Validator<br/><i>Zod Schema Validation</i>]
+    end
+
+    subgraph API["⚡ API Layer"]
+        F["/api/vibe<br/><i>Intent-Based Routing</i>"]
+    end
+
+    subgraph Data["🗄️ Persistence Layer"]
+        G[PostgreSQL<br/><i>Core Tables (Users, Orgs)</i>]
+        H[JSONB Storage<br/><i>Dynamic Entity Records</i>]
+        I[Vibe Modules Table<br/><i>Schema Registry</i>]
+    end
+
+    subgraph UI["🎨 Server-Driven UI"]
+        J[Renderer Engine<br/><i>Component Selection</i>]
+        K[Component Factory<br/><i>Table / Form / Card / Detail</i>]
+        L[Rendered Application<br/><i>Next.js Server Components</i>]
+    end
+
+    %% Flow
+    A -->|"Describe what you want"| F
+    F -->|"intent: generate"| C
+    C -->|"Raw Vibe-JSON"| E
+    E -->|"Validated Schema"| D
+    D -->|"Runtime Module"| I
+    I -->|"Stored Schema"| H
+
+    B -->|"Request View"| F
+    F -->|"intent: query"| H
+    H -->|"JSONB Records"| J
+    I -->|"View + Entity Schema"| J
+    J -->|"Select Component"| K
+    K -->|"Hydrated UI"| L
+    L -->|"Server-Rendered HTML"| B
+
+    %% Mutation flow
+    B -->|"Create/Update Record"| F
+    F -->|"intent: mutate"| E
+    E -->|"Validated Data"| H
+
+    %% Styling
+    classDef userStyle fill:#6d5cff,stroke:#5a4dd4,color:#fff
+    classDef kernelStyle fill:#1a1a2e,stroke:#6d5cff,color:#fafafa
+    classDef apiStyle fill:#0f3460,stroke:#6d5cff,color:#fafafa
+    classDef dataStyle fill:#16213e,stroke:#6d5cff,color:#fafafa
+    classDef uiStyle fill:#0f3460,stroke:#a78bfa,color:#fafafa
+
+    class A,B userStyle
+    class C,D,E kernelStyle
+    class F apiStyle
+    class G,H,I dataStyle
+    class J,K,L uiStyle
