@@ -1,10 +1,12 @@
-/**
- * VibeOS Factory — Detail Component
- *
- * Renders a single record's details in a clean key-value layout.
- */
-
 import type { VibeViewSchema, VibeEntitySchema } from "@/lib/kernel/types";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 interface VibeDetailProps {
   view: VibeViewSchema;
@@ -17,41 +19,38 @@ export function VibeDetail({ view, entity, data }: VibeDetailProps) {
 
   if (!record) {
     return (
-      <div className="rounded-lg border border-[var(--border)] bg-[var(--card)] p-8 text-center">
-        <p className="text-sm text-[var(--muted-foreground)]">
-          No record selected.
-        </p>
-      </div>
+      <Card>
+        <CardContent className="flex items-center justify-center py-8">
+          <p className="text-sm text-muted-foreground">No record selected.</p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="rounded-lg border border-[var(--border)] bg-[var(--card)]">
-      <div className="border-b border-[var(--border)] px-6 py-4">
-        <h3 className="text-lg font-semibold text-[var(--foreground)]">
-          {view.label}
-        </h3>
-        <p className="text-sm text-[var(--muted-foreground)]">
-          {entity.description}
-        </p>
-      </div>
-
-      <dl className="divide-y divide-[var(--border)]">
-        {entity.fields.map((field) => (
-          <div
-            key={field.name}
-            className="grid grid-cols-3 gap-4 px-6 py-3"
-          >
-            <dt className="text-sm font-medium text-[var(--muted-foreground)]">
-              {field.label}
-            </dt>
-            <dd className="col-span-2 text-sm text-[var(--foreground)]">
-              {formatDetailValue(record[field.name])}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{view.label}</CardTitle>
+        <CardDescription>{entity.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <dl className="space-y-0">
+          {entity.fields.map((field, idx) => (
+            <div key={field.name}>
+              {idx > 0 && <Separator />}
+              <div className="grid grid-cols-3 gap-4 py-3">
+                <dt className="text-sm font-medium text-muted-foreground">
+                  {field.label}
+                </dt>
+                <dd className="col-span-2 text-sm text-foreground">
+                  {formatDetailValue(record[field.name])}
+                </dd>
+              </div>
+            </div>
+          ))}
+        </dl>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -8,6 +8,7 @@
 
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-6-646cff?logo=vite)](https://vite.dev)
+[![Hono](https://img.shields.io/badge/Hono-4-E36002?logo=hono)](https://hono.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://typescriptlang.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-JSONB-336791?logo=postgresql)](https://postgresql.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
@@ -46,7 +47,7 @@ Intent (Natural Language)
 │  Schema Generator │  ← Vercel AI SDK + GPT-4o
 │  (LLM Compiler)  │
 └────────┬────────┘
-         │ Vibe-JSON
+         │ vibe_schema_v1
          ▼
 ┌─────────────────┐
 │    Validator     │  ← Zod Schema Validation
@@ -58,7 +59,19 @@ Intent (Natural Language)
 │   Vibe Parser   │────▶│  PostgreSQL   │
 │ (Runtime Compiler)│    │  JSONB Store  │
 └────────┬────────┘     └──────────────┘
-         │ Runtime Module
+         │ RuntimeModule
+         ▼
+┌─────────────────┐     ┌──────────────────┐
+│ Action Executor │────▶│  Provider System  │
+│ (Engine)        │     │  Email · Webhook  │
+└────────┬────────┘     │  Slack · Custom   │
+         │              └──────────────────┘
+         ▼
+┌─────────────────┐
+│  Automation     │  ← Event-driven rules
+│  Engine         │    trigger → condition → action
+└────────┬────────┘
+         │
          ▼
 ┌─────────────────┐
 │  SDUI Renderer  │  ← Server-Driven UI Engine
@@ -74,11 +87,13 @@ Intent (Natural Language)
 ## Tech Stack
 
 - **Frontend:** React 19 + Vite 6 + React Router
+- **Backend:** Hono (runs on Node.js, Bun, Cloudflare Workers, Vercel)
 - **Language:** TypeScript (strict mode, no `any`)
-- **Database:** PostgreSQL with JSONB for dynamic entities
+- **Database:** PostgreSQL with JSONB for dynamic entities (works with **Supabase**)
 - **ORM:** Drizzle ORM
 - **AI:** Vercel AI SDK with OpenAI GPT-4o
 - **Validation:** Zod
+- **Providers:** Email (Resend), Webhook (HTTP), Slack
 - **UI:** Shadcn/UI + Tailwind CSS v4
 - **Design:** Dark-mode first, Linear.app aesthetic
 
@@ -100,33 +115,38 @@ vibeoss/
 │   │   └── vibe-ui/            # Server-Driven UI
 │   │       ├── renderer.tsx    # Component selection engine
 │   │       └── factory/        # Dynamic component wrappers
-│   │           ├── vibe-table.tsx
-│   │           ├── vibe-form.tsx
-│   │           ├── vibe-detail.tsx
-│   │           └── vibe-card.tsx
 │   ├── server/
+│   │   ├── index.ts            # Hono HTTP server (API gateway)
 │   │   └── api/
 │   │       └── vibe.ts         # Intent-based API handler
 │   └── lib/
+│       ├── index.ts            # @vibeoss/core barrel export
 │       ├── kernel/             # The "Brain"
-│       │   ├── types.ts        # Vibe-JSON type definitions
+│       │   ├── types.ts        # vibe_schema_v1 type definitions
 │       │   ├── validator.ts    # Zod-based schema validation
 │       │   ├── vibe-parser.ts  # Schema → Runtime compiler
 │       │   └── schema-generator.ts  # NL → JSON via AI
+│       ├── engine/             # Runtime engines
+│       │   ├── action-executor.ts  # Execute actions via providers
+│       │   └── automation-engine.ts # Event → Condition → Action
+│       ├── providers/          # Integration providers
+│       │   ├── types.ts        # VibeProvider interface
+│       │   ├── registry.ts     # Provider registry (singleton)
+│       │   ├── email.ts        # Email via Resend
+│       │   ├── webhook.ts      # HTTP webhook calls
+│       │   └── slack.ts        # Slack incoming webhook
 │       ├── database/           # Hybrid persistence
 │       │   ├── db.ts           # Drizzle config
 │       │   ├── schema.ts       # Core + dynamic tables
 │       │   └── migrations/     # SQL migrations
 │       └── utils.ts            # Shared utilities
-├── tfg/                        # Academic thesis
-│   ├── manuscript.md           # Main document
-│   ├── references.bib          # Harvard citations
-│   ├── ai-disclosure.md        # AI usage log
-│   └── prompts/                # Prompt engineering archive
 ├── docs/
-│   └── architecture/
-│       ├── metadata-spec.yaml  # Vibe-JSON specification
-│       └── system-flow.mermaid # System architecture diagram
+│   ├── architecture/
+│   │   ├── metadata-spec.yaml  # Vibe-JSON specification
+│   │   └── system-flow.mermaid # System architecture diagram
+│   └── examples/
+│       └── crm-vibe-schema-v1.json  # Example CRM module
+├── tfg/                        # Academic thesis
 └── README.md
 ```
 
@@ -149,52 +169,50 @@ cp .env.example .env.local
 # Run database migrations
 npm run db:migrate
 
-# Start development server
-npm run dev
+# Start everything (frontend + API server)
+npm run dev:all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see VibeOS.
+| Service | URL |
+|---|---|
+| Frontend (Vite) | [http://127.0.0.1:5173](http://127.0.0.1:5173) |
+| API Server (Hono) | [http://localhost:3001/api/vibe](http://localhost:3001/api/vibe) |
+
+Or start them separately: `npm run dev` (frontend) and `npm run dev:server` (API).
 
 ---
 
 ## The Vibe-JSON Standard
 
-Every application in VibeOS is defined by a single JSON document:
+Every application in VibeOS is defined by a single `vibe_schema_v1` document — entities, views, actions, and automations all in one:
 
 ```json
 {
   "version": "1.0.0",
   "module": "simple-crm",
-  "description": "A simple CRM with contacts and deals",
-  "entities": [
-    {
-      "name": "contact",
-      "label": "Contact",
-      "pluralLabel": "Contacts",
-      "description": "People and organizations",
-      "fields": [
-        { "name": "full_name", "label": "Full Name", "type": "text", "required": true },
-        { "name": "email", "label": "Email", "type": "email", "required": true, "unique": true },
-        { "name": "company", "label": "Company", "type": "text", "required": false },
-        { "name": "status", "label": "Status", "type": "select", "required": true,
-          "options": ["Lead", "Active", "Inactive"] }
-      ],
-      "timestamps": true,
-      "softDelete": true
-    }
-  ],
+  "description": "CRM with contacts and automated welcome emails",
+  "entities": [{ "name": "contact", "label": "Contact", "..." : "..." }],
   "views": [
+    { "name": "contacts-table", "entity": "contact",
+      "layout": { "type": "table", "columns": ["full_name", "email", "status"] } }
+  ],
+  "actions": [
+    { "name": "create-contact", "type": "create", "label": "New Contact", "targetEntity": "contact" },
+    { "name": "export-contacts", "type": "export", "label": "Export CSV", "targetEntity": "contact" }
+  ],
+  "automations": [
     {
-      "name": "contacts-table",
-      "label": "All Contacts",
-      "entity": "contact",
-      "layout": { "type": "table", "columns": ["full_name", "email", "company", "status"] }
+      "name": "welcome-email", "entity": "contact", "trigger": "on_create",
+      "actions": [{
+        "name": "send-welcome", "type": "notify", "label": "Send Welcome",
+        "notification": { "channel": "email", "template": "Welcome {{full_name}}!" }
+      }]
     }
   ]
 }
 ```
 
-This single document generates: a database table, CRUD API, table view, form, and detail page.
+This single document generates: database table, CRUD API, table view, form, detail page, **and** automated workflows. See [`docs/examples/crm-vibe-schema-v1.json`](docs/examples/crm-vibe-schema-v1.json) for a full example.
 
 ---
 

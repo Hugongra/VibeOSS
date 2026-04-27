@@ -1,18 +1,20 @@
 /**
- * VibeOS Kernel — Vibe Parser
+ * VibeOS Kernel — Vibe Parser (vibe_schema_v1)
  *
- * The parser is responsible for interpreting Vibe-JSON schemas and
- * transforming them into runtime-usable structures. It acts as the bridge
- * between the raw metadata definition and the platform's execution layer.
+ * The parser interprets vibe_schema_v1 documents and compiles them into
+ * runtime-usable structures with pre-computed lookup maps for entities,
+ * views, actions, and automations.
  *
- * Pipeline:  Raw JSON → Validation → Normalization → Runtime Schema
+ * Pipeline:  Raw JSON → Validation → Normalization → RuntimeModule
  */
 
 import type {
-  VibeModuleSchema,
+  VibeSchemaV1,
   VibeEntitySchema,
   VibeViewSchema,
   VibeFieldDefinition,
+  VibeActionSchema,
+  VibeAutomationSchema,
   VibeParseResult,
 } from "./types";
 import { validateVibeSchema, validateVibeSchemaFromString } from "./validator";
@@ -29,20 +31,24 @@ export interface RuntimeEntity {
   relationFields: string[];
 }
 
-/** A runtime-ready module with indexed entities and views */
+/** A runtime-ready module with indexed entities, views, actions, automations */
 export interface RuntimeModule {
-  raw: VibeModuleSchema;
+  raw: VibeSchemaV1;
   entities: Map<string, RuntimeEntity>;
   views: Map<string, VibeViewSchema>;
+  actions: Map<string, VibeActionSchema>;
+  automations: Map<string, VibeAutomationSchema>;
+  /** Automations indexed by entity name for fast lookup */
+  automationsByEntity: Map<string, VibeAutomationSchema[]>;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Parser Implementation                                             */
+/*  Parser — public API                                               */
 /* ------------------------------------------------------------------ */
 
 /**
- * Parse and compile a Vibe-JSON schema into a RuntimeModule.
- * This is the primary entry point for the kernel.
+ * Parse and compile a vibe_schema_v1 into a RuntimeModule.
+ * Primary entry point for the kernel.
  */
 export function parseVibeSchema(input: unknown): VibeParseResult & { runtime?: RuntimeModule } {
   const validation = validateVibeSchema(input);
@@ -61,7 +67,7 @@ export function parseVibeSchema(input: unknown): VibeParseResult & { runtime?: R
 }
 
 /**
- * Parse a Vibe-JSON schema from a raw JSON string.
+ * Parse a vibe_schema_v1 from a raw JSON string.
  */
 export function parseVibeSchemaFromString(
   jsonString: string
@@ -86,9 +92,12 @@ export function parseVibeSchemaFromString(
 /* ------------------------------------------------------------------ */
 
 /** Compile a validated schema into an optimized runtime module */
-function compileModule(schema: VibeModuleSchema): RuntimeModule {
+function compileModule(schema: VibeSchemaV1): RuntimeModule {
   const entities = new Map<string, RuntimeEntity>();
   const views = new Map<string, VibeViewSchema>();
+  const actions = new Map<string, VibeActionSchema>();
+  const automations = new Map<string, VibeAutomationSchema>();
+  const automationsByEntity = new Map<string, VibeAutomationSchema[]>();
 
   for (const entity of schema.entities) {
     entities.set(entity.name, compileEntity(entity));
@@ -98,7 +107,23 @@ function compileModule(schema: VibeModuleSchema): RuntimeModule {
     views.set(view.name, view);
   }
 
-  return { raw: schema, entities, views };
+  if (schema.actions) {
+    for (const action of schema.actions) {
+      actions.set(action.name, action);
+    }
+  }
+
+  if (schema.automations) {
+    for (const automation of schema.automations) {
+      automations.set(automation.name, automation);
+
+      const existing = automationsByEntity.get(automation.entity) ?? [];
+      existing.push(automation);
+      automationsByEntity.set(automation.entity, existing);
+    }
+  }
+
+  return { raw: schema, entities, views, actions, automations, automationsByEntity };
 }
 
 /** Compile a single entity into a runtime-ready representation */
@@ -119,19 +144,17 @@ function compileEntity(entity: VibeEntitySchema): RuntimeEntity {
     }
   }
 
-  return {
-    schema: entity,
-    fieldMap,
-    requiredFields,
-    relationFields,
-  };
+  return { schema: entity, fieldMap, requiredFields, relationFields };
 }
+
+/* ------------------------------------------------------------------ */
+/*  Utility helpers                                                   */
+/* ------------------------------------------------------------------ */
 
 /**
  * Extract a flat list of all entity names from a schema.
- * Useful for quick lookups and dependency resolution.
  */
-export function extractEntityNames(schema: VibeModuleSchema): string[] {
+export function extractEntityNames(schema: VibeSchemaV1): string[] {
   return schema.entities.map((e) => e.name);
 }
 
@@ -139,9 +162,7 @@ export function extractEntityNames(schema: VibeModuleSchema): string[] {
  * Resolve cross-entity relations — returns a dependency graph
  * as an adjacency list.
  */
-export function resolveRelations(
-  schema: VibeModuleSchema
-): Map<string, string[]> {
+export function resolveRelations(schema: VibeSchemaV1): Map<string, string[]> {
   const graph = new Map<string, string[]>();
 
   for (const entity of schema.entities) {
@@ -155,4 +176,16 @@ export function resolveRelations(
   }
 
   return graph;
+}
+
+/**
+ * Get all automations that should fire for a given entity + trigger combination.
+ */
+export function getAutomationsForTrigger(
+  runtime: RuntimeModule,
+  entityName: string,
+  trigger: string
+): VibeAutomationSchema[] {
+  const entityAutomations = runtime.automationsByEntity.get(entityName) ?? [];
+  return entityAutomations.filter((a) => a.trigger === trigger);
 }

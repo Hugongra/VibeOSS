@@ -1,11 +1,26 @@
-/**
- * VibeOS Factory — Form Component
- *
- * Renders a dynamic form based on entity field definitions.
- * Each field type maps to an appropriate input control.
- */
-
-import type { VibeViewSchema, VibeEntitySchema, VibeFieldDefinition } from "@/lib/kernel/types";
+import type {
+  VibeViewSchema,
+  VibeEntitySchema,
+  VibeFieldDefinition,
+} from "@/lib/kernel/types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface VibeFormProps {
   view: VibeViewSchema;
@@ -15,76 +30,66 @@ interface VibeFormProps {
 
 export function VibeForm({ view, entity }: VibeFormProps) {
   return (
-    <div className="rounded-lg border border-[var(--border)] bg-[var(--card)] p-6">
-      <h3 className="mb-6 text-lg font-semibold text-[var(--foreground)]">
-        {view.label}
-      </h3>
+    <Card>
+      <CardHeader>
+        <CardTitle>{view.label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form className="space-y-5">
+          {entity.fields.map((field) => (
+            <VibeFormField key={field.name} field={field} />
+          ))}
 
-      <form className="space-y-5">
-        {entity.fields.map((field) => (
-          <VibeFormField key={field.name} field={field} />
-        ))}
-
-        <div className="flex items-center gap-3 pt-4">
-          <button
-            type="submit"
-            className="inline-flex h-9 items-center rounded-md bg-[var(--primary)] px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            className="inline-flex h-9 items-center rounded-md border border-[var(--border)] bg-transparent px-4 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="flex items-center gap-3 pt-4">
+            <Button type="submit">Save</Button>
+            <Button type="button" variant="outline">
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 
 function VibeFormField({ field }: { field: VibeFieldDefinition }) {
-  const inputClasses =
-    "w-full rounded-md border border-[var(--input)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]";
-
   return (
-    <div>
-      <label
-        htmlFor={field.name}
-        className="mb-1.5 block text-sm font-medium text-[var(--foreground)]"
-      >
+    <div className="space-y-1.5">
+      <Label htmlFor={field.name}>
         {field.label}
         {field.required && (
-          <span className="ml-1 text-[var(--destructive)]">*</span>
+          <span className="text-destructive">*</span>
         )}
-      </label>
+      </Label>
 
       {field.description && (
-        <p className="mb-1.5 text-xs text-[var(--muted-foreground)]">
-          {field.description}
-        </p>
+        <p className="text-xs text-muted-foreground">{field.description}</p>
       )}
 
-      {renderInput(field, inputClasses)}
+      {renderInput(field)}
     </div>
   );
 }
 
-function renderInput(field: VibeFieldDefinition, className: string) {
+function renderInput(field: VibeFieldDefinition) {
   switch (field.type) {
     case "text":
     case "email":
     case "url":
     case "phone":
       return (
-        <input
+        <Input
           id={field.name}
           name={field.name}
-          type={field.type === "email" ? "email" : field.type === "url" ? "url" : "text"}
+          type={
+            field.type === "email"
+              ? "email"
+              : field.type === "url"
+                ? "url"
+                : "text"
+          }
           placeholder={field.label}
           required={field.required}
-          className={className}
         />
       );
 
@@ -92,7 +97,7 @@ function renderInput(field: VibeFieldDefinition, className: string) {
     case "currency":
     case "percentage":
       return (
-        <input
+        <Input
           id={field.name}
           name={field.name}
           type="number"
@@ -100,75 +105,65 @@ function renderInput(field: VibeFieldDefinition, className: string) {
           required={field.required}
           min={field.validation?.min}
           max={field.validation?.max}
-          className={className}
         />
       );
 
     case "boolean":
       return (
         <div className="flex items-center gap-2">
-          <input
-            id={field.name}
-            name={field.name}
-            type="checkbox"
-            className="h-4 w-4 rounded border-[var(--input)] bg-[var(--background)]"
-          />
-          <span className="text-sm text-[var(--muted-foreground)]">
+          <Checkbox id={field.name} name={field.name} />
+          <Label htmlFor={field.name} className="font-normal">
             {field.label}
-          </span>
+          </Label>
         </div>
       );
 
     case "date":
     case "datetime":
       return (
-        <input
+        <Input
           id={field.name}
           name={field.name}
           type={field.type === "datetime" ? "datetime-local" : "date"}
           required={field.required}
-          className={className}
         />
       );
 
     case "select":
       return (
-        <select
-          id={field.name}
-          name={field.name}
-          required={field.required}
-          className={className}
-        >
-          <option value="">Select {field.label}...</option>
-          {field.options?.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        <Select name={field.name} required={field.required}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder={`Select ${field.label}...`} />
+          </SelectTrigger>
+          <SelectContent>
+            {field.options?.map((opt) => (
+              <SelectItem key={opt} value={opt}>
+                {opt}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       );
 
     case "rich-text":
       return (
-        <textarea
+        <Textarea
           id={field.name}
           name={field.name}
           placeholder={field.label}
           required={field.required}
           rows={4}
-          className={className}
         />
       );
 
     default:
       return (
-        <input
+        <Input
           id={field.name}
           name={field.name}
           type="text"
           placeholder={field.label}
           required={field.required}
-          className={className}
         />
       );
   }

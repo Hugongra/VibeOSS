@@ -1,10 +1,17 @@
 /**
- * VibeOS Kernel — Core Type Definitions
+ * VibeOS Kernel — Core Type Definitions (vibe_schema_v1)
  *
  * These types define the "Vibe-JSON" standard that powers the entire platform.
- * Every entity, field, view, and action in the system is described by metadata
- * conforming to these interfaces.
+ * Every entity, field, view, action, and automation in the system is described
+ * by metadata conforming to these interfaces.
+ *
+ * The root envelope is `VibeSchemaV1` — the single source of truth that the
+ * kernel parses, the AI generates, and the renderer consumes.
  */
+
+/* ------------------------------------------------------------------ */
+/*  Field System                                                      */
+/* ------------------------------------------------------------------ */
 
 /** Supported field types in the Vibe schema */
 export type VibeFieldType =
@@ -25,6 +32,19 @@ export type VibeFieldType =
   | "rich-text"
   | "json";
 
+/**
+ * Zod-compatible validation rules embedded in field metadata.
+ * The kernel compiles these into runtime Zod schemas for record validation.
+ */
+export interface VibeFieldValidation {
+  min?: number;
+  max?: number;
+  min_length?: number;
+  max_length?: number;
+  pattern?: string;
+  message?: string;
+}
+
 /** Definition of a single field in an entity */
 export interface VibeFieldDefinition {
   name: string;
@@ -34,19 +54,18 @@ export interface VibeFieldDefinition {
   unique?: boolean;
   defaultValue?: unknown;
   description?: string;
-  options?: string[]; // For select / multi-select
+  options?: string[];
   relation?: {
     entity: string;
     field: string;
     type: "one-to-one" | "one-to-many" | "many-to-many";
   };
-  validation?: {
-    min?: number;
-    max?: number;
-    pattern?: string;
-    message?: string;
-  };
+  validation?: VibeFieldValidation;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Entity System                                                     */
+/* ------------------------------------------------------------------ */
 
 /** A complete entity (object) definition */
 export interface VibeEntitySchema {
@@ -59,6 +78,10 @@ export interface VibeEntitySchema {
   timestamps: boolean;
   softDelete: boolean;
 }
+
+/* ------------------------------------------------------------------ */
+/*  View / UI System                                                  */
+/* ------------------------------------------------------------------ */
 
 /** UI component types supported by the Server-Driven UI renderer */
 export type VibeUIComponentType =
@@ -98,35 +121,121 @@ export interface VibeViewSchema {
   actions?: VibeActionSchema[];
 }
 
-/** An action that can be triggered from the UI */
+/* ------------------------------------------------------------------ */
+/*  Action System                                                     */
+/* ------------------------------------------------------------------ */
+
+/** Action types available in the UI and automation layer */
+export type VibeActionType =
+  | "create"
+  | "update"
+  | "delete"
+  | "navigate"
+  | "webhook"
+  | "notify"
+  | "approve"
+  | "reject"
+  | "export"
+  | "import"
+  | "transition"
+  | "custom";
+
+/** An action that can be triggered from the UI or by an automation */
 export interface VibeActionSchema {
   name: string;
   label: string;
-  type: "create" | "update" | "delete" | "navigate" | "webhook" | "custom";
+  type: VibeActionType;
   icon?: string;
   confirmation?: string;
   targetEntity?: string;
   targetUrl?: string;
+  /** For "transition" actions: the field and target value to set */
+  transition?: {
+    field: string;
+    to: string;
+  };
+  /** For "notify" actions: channel and template */
+  notification?: {
+    channel: "email" | "slack" | "teams" | "in_app";
+    template?: string;
+    recipients?: string;
+  };
 }
 
-/** The top-level Vibe-JSON schema that defines an entire module */
-export interface VibeModuleSchema {
+/* ------------------------------------------------------------------ */
+/*  Automation System                                                 */
+/* ------------------------------------------------------------------ */
+
+/** When an automation fires */
+export type VibeAutomationTrigger =
+  | "on_create"
+  | "on_update"
+  | "on_delete"
+  | "on_field_change"
+  | "on_schedule"
+  | "manual";
+
+/** A single automation rule */
+export interface VibeAutomationSchema {
+  name: string;
+  label: string;
+  entity: string;
+  trigger: VibeAutomationTrigger;
+  /** Optional: only fire when this field changes (for on_field_change) */
+  watchField?: string;
+  /** Condition expressed as a filter — automation runs only if record matches */
+  condition?: {
+    field: string;
+    operator: "eq" | "neq" | "gt" | "lt" | "gte" | "lte" | "contains" | "in";
+    value: unknown;
+  };
+  /** Actions to execute when the automation fires */
+  actions: VibeActionSchema[];
+}
+
+/* ------------------------------------------------------------------ */
+/*  Navigation                                                        */
+/* ------------------------------------------------------------------ */
+
+export interface VibeNavigationItem {
+  label: string;
+  icon?: string;
+  view: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Top-level: vibe_schema_v1                                         */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The root envelope — `vibe_schema_v1`.
+ * This is the single document that fully defines a business module:
+ * data model, UI, actions, automations, and navigation.
+ */
+export interface VibeSchemaV1 {
   version: string;
   module: string;
   description: string;
   entities: VibeEntitySchema[];
   views: VibeViewSchema[];
-  navigation?: Array<{
-    label: string;
-    icon?: string;
-    view: string;
-  }>;
+  actions?: VibeActionSchema[];
+  automations?: VibeAutomationSchema[];
+  navigation?: VibeNavigationItem[];
 }
+
+/**
+ * @deprecated Use `VibeSchemaV1` instead. Kept for backward compatibility.
+ */
+export type VibeModuleSchema = VibeSchemaV1;
+
+/* ------------------------------------------------------------------ */
+/*  Parse / Generation results                                        */
+/* ------------------------------------------------------------------ */
 
 /** Result of parsing / validating a Vibe schema */
 export interface VibeParseResult {
   success: boolean;
-  schema?: VibeModuleSchema;
+  schema?: VibeSchemaV1;
   errors?: Array<{
     path: string;
     message: string;
@@ -145,7 +254,7 @@ export interface VibeIntentRequest {
 /** Response from the schema generator */
 export interface VibeGenerationResult {
   success: boolean;
-  schema?: VibeModuleSchema;
+  schema?: VibeSchemaV1;
   rawJson?: string;
   tokensUsed?: number;
   errors?: string[];

@@ -17,6 +17,8 @@ import { VibeTable } from "./factory/vibe-table";
 import { VibeForm } from "./factory/vibe-form";
 import { VibeDetail } from "./factory/vibe-detail";
 import { VibeCard } from "./factory/vibe-card";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 /* ------------------------------------------------------------------ */
 /*  Component Registry                                                */
@@ -40,11 +42,11 @@ const COMPONENT_REGISTRY: Record<
   form: VibeForm,
   detail: VibeDetail,
   card: VibeCard,
-  list: null, // TODO: Implement VibeList
-  kanban: null, // TODO: Implement VibeKanban
-  chart: null, // TODO: Implement VibeChart
-  stat: null, // TODO: Implement VibeStat
-  custom: null, // Custom components loaded dynamically
+  list: null,
+  kanban: null,
+  chart: null,
+  stat: null,
+  custom: null,
 };
 
 /* ------------------------------------------------------------------ */
@@ -66,20 +68,22 @@ export function VibeRenderer({ view, entity, data }: VibeRendererProps) {
 
   if (!Component) {
     return (
-      <div className="flex items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--card)] p-8">
-        <div className="text-center">
-          <p className="text-sm font-medium text-[var(--muted-foreground)]">
-            Component type{" "}
-            <code className="rounded bg-[var(--secondary)] px-1.5 py-0.5 font-mono text-xs">
-              {view.layout.type}
-            </code>{" "}
-            is not yet implemented.
-          </p>
-          <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-            View: {view.label} &middot; Entity: {entity.label}
-          </p>
-        </div>
-      </div>
+      <Card>
+        <CardContent className="flex items-center justify-center py-8">
+          <div className="text-center">
+            <p className="text-sm font-medium text-muted-foreground">
+              Component type{" "}
+              <Badge variant="secondary" className="font-mono text-xs">
+                {view.layout.type}
+              </Badge>{" "}
+              is not yet implemented.
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              View: {view.label} &middot; Entity: {entity.label}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

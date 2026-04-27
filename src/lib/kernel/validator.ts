@@ -1,5 +1,5 @@
 /**
- * VibeOS Kernel — Schema Validator
+ * VibeOS Kernel — Schema Validator (vibe_schema_v1)
  *
  * Zod-based validation to ensure AI-generated metadata conforms to the
  * Vibe-JSON specification. This is the safety net between AI output and
@@ -7,34 +7,31 @@
  */
 
 import { z } from "zod";
-import type { VibeModuleSchema, VibeParseResult } from "./types";
+import type { VibeSchemaV1, VibeParseResult } from "./types";
 
 /* ------------------------------------------------------------------ */
-/*  Zod Schemas                                                       */
+/*  Shared primitives                                                 */
+/* ------------------------------------------------------------------ */
+
+const snakeCaseRegex = /^[a-z][a-z0-9_]*$/;
+const kebabCaseRegex = /^[a-z][a-z0-9_-]*$/;
+const semverRegex = /^\d+\.\d+\.\d+$/;
+
+/* ------------------------------------------------------------------ */
+/*  Field schemas                                                     */
 /* ------------------------------------------------------------------ */
 
 const vibeFieldTypeSchema = z.enum([
-  "text",
-  "number",
-  "boolean",
-  "date",
-  "datetime",
-  "email",
-  "url",
-  "phone",
-  "currency",
-  "percentage",
-  "select",
-  "multi-select",
-  "relation",
-  "file",
-  "rich-text",
-  "json",
+  "text", "number", "boolean", "date", "datetime",
+  "email", "url", "phone", "currency", "percentage",
+  "select", "multi-select", "relation", "file", "rich-text", "json",
 ]);
 
 const vibeFieldValidationSchema = z.object({
   min: z.number().optional(),
   max: z.number().optional(),
+  min_length: z.number().int().nonnegative().optional(),
+  max_length: z.number().int().positive().optional(),
   pattern: z.string().optional(),
   message: z.string().optional(),
 });
@@ -46,10 +43,7 @@ const vibeRelationSchema = z.object({
 });
 
 const vibeFieldDefinitionSchema = z.object({
-  name: z
-    .string()
-    .min(1)
-    .regex(/^[a-z][a-z0-9_]*$/, "Field name must be snake_case"),
+  name: z.string().min(1).regex(snakeCaseRegex, "Field name must be snake_case"),
   label: z.string().min(1),
   type: vibeFieldTypeSchema,
   required: z.boolean(),
@@ -61,11 +55,12 @@ const vibeFieldDefinitionSchema = z.object({
   validation: vibeFieldValidationSchema.optional(),
 });
 
+/* ------------------------------------------------------------------ */
+/*  Entity schema                                                     */
+/* ------------------------------------------------------------------ */
+
 const vibeEntitySchema = z.object({
-  name: z
-    .string()
-    .min(1)
-    .regex(/^[a-z][a-z0-9_]*$/, "Entity name must be snake_case"),
+  name: z.string().min(1).regex(snakeCaseRegex, "Entity name must be snake_case"),
   label: z.string().min(1),
   pluralLabel: z.string().min(1),
   description: z.string(),
@@ -74,6 +69,10 @@ const vibeEntitySchema = z.object({
   timestamps: z.boolean(),
   softDelete: z.boolean(),
 });
+
+/* ------------------------------------------------------------------ */
+/*  View schemas                                                      */
+/* ------------------------------------------------------------------ */
 
 const vibeFilterSchema = z.object({
   field: z.string().min(1),
@@ -88,15 +87,8 @@ const vibeSortingSchema = z.object({
 
 const vibeViewLayoutSchema = z.object({
   type: z.enum([
-    "table",
-    "form",
-    "detail",
-    "card",
-    "list",
-    "kanban",
-    "chart",
-    "stat",
-    "custom",
+    "table", "form", "detail", "card", "list",
+    "kanban", "chart", "stat", "custom",
   ]),
   columns: z.array(z.string()).optional(),
   filters: z.array(vibeFilterSchema).optional(),
@@ -105,15 +97,42 @@ const vibeViewLayoutSchema = z.object({
   pageSize: z.number().int().positive().optional(),
 });
 
+/* ------------------------------------------------------------------ */
+/*  Action schemas                                                    */
+/* ------------------------------------------------------------------ */
+
+const vibeActionTypeSchema = z.enum([
+  "create", "update", "delete", "navigate", "webhook",
+  "notify", "approve", "reject", "export", "import",
+  "transition", "custom",
+]);
+
+const vibeNotificationSchema = z.object({
+  channel: z.enum(["email", "slack", "teams", "in_app"]),
+  template: z.string().optional(),
+  recipients: z.string().optional(),
+});
+
+const vibeTransitionSchema = z.object({
+  field: z.string().min(1),
+  to: z.string().min(1),
+});
+
 const vibeActionSchema = z.object({
   name: z.string().min(1),
   label: z.string().min(1),
-  type: z.enum(["create", "update", "delete", "navigate", "webhook", "custom"]),
+  type: vibeActionTypeSchema,
   icon: z.string().optional(),
   confirmation: z.string().optional(),
   targetEntity: z.string().optional(),
   targetUrl: z.string().optional(),
+  transition: vibeTransitionSchema.optional(),
+  notification: vibeNotificationSchema.optional(),
 });
+
+/* ------------------------------------------------------------------ */
+/*  View schema (with inline actions)                                 */
+/* ------------------------------------------------------------------ */
 
 const vibeViewSchema = z.object({
   name: z.string().min(1),
@@ -123,21 +142,53 @@ const vibeViewSchema = z.object({
   actions: z.array(vibeActionSchema).optional(),
 });
 
+/* ------------------------------------------------------------------ */
+/*  Automation schemas                                                */
+/* ------------------------------------------------------------------ */
+
+const vibeAutomationTriggerSchema = z.enum([
+  "on_create", "on_update", "on_delete", "on_field_change",
+  "on_schedule", "manual",
+]);
+
+const vibeAutomationConditionSchema = z.object({
+  field: z.string().min(1),
+  operator: z.enum(["eq", "neq", "gt", "lt", "gte", "lte", "contains", "in"]),
+  value: z.unknown(),
+});
+
+const vibeAutomationSchema = z.object({
+  name: z.string().min(1),
+  label: z.string().min(1),
+  entity: z.string().min(1),
+  trigger: vibeAutomationTriggerSchema,
+  watchField: z.string().optional(),
+  condition: vibeAutomationConditionSchema.optional(),
+  actions: z.array(vibeActionSchema).min(1),
+});
+
+/* ------------------------------------------------------------------ */
+/*  Navigation                                                        */
+/* ------------------------------------------------------------------ */
+
 const vibeNavigationSchema = z.object({
   label: z.string().min(1),
   icon: z.string().optional(),
   view: z.string().min(1),
 });
 
+/* ------------------------------------------------------------------ */
+/*  Root: vibe_schema_v1                                              */
+/* ------------------------------------------------------------------ */
+
 export const vibeModuleSchema = z.object({
-  version: z.string().regex(/^\d+\.\d+\.\d+$/, "Version must be semver"),
-  module: z
-    .string()
-    .min(1)
-    .regex(/^[a-z][a-z0-9_-]*$/, "Module name must be kebab-case"),
+  version: z.string().regex(semverRegex, "Version must be semver"),
+  module: z.string().min(1).regex(kebabCaseRegex, "Module name must be kebab-case"),
   description: z.string().min(1),
   entities: z.array(vibeEntitySchema).min(1),
   views: z.array(vibeViewSchema).min(1),
+  actions: z.array(vibeActionSchema).optional(),
+  automations: z.array(vibeAutomationSchema).optional(),
   navigation: z.array(vibeNavigationSchema).optional(),
 });
 
@@ -146,8 +197,7 @@ export const vibeModuleSchema = z.object({
 /* ------------------------------------------------------------------ */
 
 /**
- * Validate a raw JSON object against the Vibe-JSON specification.
- * Returns a typed result with either the validated schema or structured errors.
+ * Validate a raw JSON object against the vibe_schema_v1 specification.
  */
 export function validateVibeSchema(input: unknown): VibeParseResult {
   const result = vibeModuleSchema.safeParse(input);
@@ -155,7 +205,7 @@ export function validateVibeSchema(input: unknown): VibeParseResult {
   if (result.success) {
     return {
       success: true,
-      schema: result.data as VibeModuleSchema,
+      schema: result.data as VibeSchemaV1,
     };
   }
 

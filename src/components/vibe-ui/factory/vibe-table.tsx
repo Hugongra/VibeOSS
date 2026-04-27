@@ -1,11 +1,13 @@
-/**
- * VibeOS Factory — Table Component
- *
- * Renders a data table based on entity fields and view configuration.
- * Automatically generates columns from the schema and applies filters/sorting.
- */
-
 import type { VibeViewSchema, VibeEntitySchema } from "@/lib/kernel/types";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 interface VibeTableProps {
   view: VibeViewSchema;
@@ -18,64 +20,47 @@ export function VibeTable({ view, entity, data }: VibeTableProps) {
   const fieldMap = new Map(entity.fields.map((f) => [f.name, f]));
 
   return (
-    <div className="w-full overflow-hidden rounded-lg border border-[var(--border)]">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--card)] px-4 py-3">
-        <h3 className="text-sm font-medium text-[var(--foreground)]">
-          {view.label}
-        </h3>
-        <span className="text-xs text-[var(--muted-foreground)]">
-          {data.length} records
-        </span>
+    <div className="w-full space-y-2">
+      <div className="flex items-center justify-between px-1">
+        <h3 className="text-sm font-medium text-foreground">{view.label}</h3>
+        <Badge variant="secondary">{data.length} records</Badge>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-[var(--border)] bg-[var(--secondary)]">
+      <div className="rounded-lg border border-border">
+        <Table>
+          <TableHeader>
+            <TableRow>
               {columns.map((col) => {
                 const field = fieldMap.get(col);
                 return (
-                  <th
-                    key={col}
-                    className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]"
-                  >
+                  <TableHead key={col} className="text-xs uppercase tracking-wider">
                     {field?.label ?? col}
-                  </th>
+                  </TableHead>
                 );
               })}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[var(--border)]">
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {data.length === 0 ? (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={columns.length}
-                  className="px-4 py-8 text-center text-sm text-[var(--muted-foreground)]"
+                  className="h-24 text-center text-muted-foreground"
                 >
                   No records found.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               data.map((row, idx) => (
-                <tr
-                  key={idx}
-                  className="bg-[var(--card)] transition-colors hover:bg-[var(--secondary)]"
-                >
+                <TableRow key={idx}>
                   {columns.map((col) => (
-                    <td
-                      key={col}
-                      className="whitespace-nowrap px-4 py-2.5 text-sm text-[var(--foreground)]"
-                    >
-                      {formatCellValue(row[col])}
-                    </td>
+                    <TableCell key={col}>{formatCellValue(row[col])}</TableCell>
                   ))}
-                </tr>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
