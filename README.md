@@ -104,48 +104,29 @@ Intent (Natural Language)
 ```
 vibeoss/
 ├── index.html                  # Vite entry point
-├── vite.config.ts              # Vite + React + Tailwind config
+├── vite.config.ts              # Vite + React + Tailwind (aliases: @ → client, @shared)
 ├── src/
-│   ├── main.tsx                # React bootstrap
-│   ├── App.tsx                 # Root component + React Router
-│   ├── index.css               # Global styles (dark-first design system)
-│   ├── pages/
-│   │   └── HomePage.tsx        # Landing page
-│   ├── components/
-│   │   └── vibe-ui/            # Server-Driven UI
-│   │       ├── renderer.tsx    # Component selection engine
-│   │       └── factory/        # Dynamic component wrappers
-│   ├── server/
-│   │   ├── index.ts            # Hono HTTP server (API gateway)
-│   │   └── api/
-│   │       └── vibe.ts         # Intent-based API handler
-│   └── lib/
-│       ├── index.ts            # @vibeoss/core barrel export
-│       ├── kernel/             # The "Brain"
-│       │   ├── types.ts        # vibe_schema_v1 type definitions
-│       │   ├── validator.ts    # Zod-based schema validation
-│       │   ├── vibe-parser.ts  # Schema → Runtime compiler
-│       │   └── schema-generator.ts  # NL → JSON via AI
-│       ├── engine/             # Runtime engines
-│       │   ├── action-executor.ts  # Execute actions via providers
-│       │   └── automation-engine.ts # Event → Condition → Action
-│       ├── providers/          # Integration providers
-│       │   ├── types.ts        # VibeProvider interface
-│       │   ├── registry.ts     # Provider registry (singleton)
-│       │   ├── email.ts        # Email via Resend
-│       │   ├── webhook.ts      # HTTP webhook calls
-│       │   └── slack.ts        # Slack incoming webhook
-│       ├── database/           # Hybrid persistence
-│       │   ├── db.ts           # Drizzle config
-│       │   ├── schema.ts       # Core + dynamic tables
-│       │   └── migrations/     # SQL migrations
-│       └── utils.ts            # Shared utilities
+│   ├── client/                 # React SPA (Vite)
+│   │   ├── main.tsx            # Bootstrap
+│   │   ├── App.tsx             # Router + layout
+│   │   ├── index.css           # Global styles
+│   │   ├── pages/              # Home, Builder, auth…
+│   │   ├── components/         # UI + vibe-ui (SDUI)
+│   │   └── lib/                # Client helpers (e.g. auth context)
+│   ├── server/                 # Hono API + kernel + engine (Node)
+│   │   ├── index.ts            # HTTP server + CORS + routes
+│   │   ├── api/vibe.ts         # Intent handler (generate, validate, …)
+│   │   ├── kernel/             # Parser, validator, schema generator (OpenAI)
+│   │   ├── engine/             # Actions + automations
+│   │   ├── providers/          # Email, Slack, webhook…
+│   │   └── database/           # Drizzle + migrations (Postgres / Supabase)
+│   └── shared/                 # Types shared by client and server
 ├── docs/
 │   ├── architecture/
-│   │   ├── metadata-spec.yaml  # Vibe-JSON specification
-│   │   └── system-flow.mermaid # System architecture diagram
+│   │   ├── metadata-spec.yaml
+│   │   └── system-flow.mermaid
 │   └── examples/
-│       └── crm-vibe-schema-v1.json  # Example CRM module
+│       └── crm-vibe-schema-v1.json
 ├── tfg/                        # Academic thesis
 └── README.md
 ```
@@ -164,7 +145,9 @@ npm install
 
 # Set up environment variables
 cp .env.example .env.local
-# Edit .env.local with your DATABASE_URL and OPENAI_API_KEY
+# Edit .env.local — at minimum for local dev:
+#   OPENAI_API_KEY   → required for POST /api/vibe intent "generate"
+#   DATABASE_URL     → Postgres connection string (Supabase: Project Settings → Database → URI)
 
 # Run database migrations
 npm run db:migrate
@@ -173,12 +156,36 @@ npm run db:migrate
 npm run dev:all
 ```
 
+### Environment notes
+
+- **OpenAI:** `intent: "generate"` uses the Vercel AI SDK with `gpt-4o`. The API key must be available to the **Node** process (`OPENAI_API_KEY`). Vite only injects variables prefixed with `VITE_` into the browser bundle.
+- **Supabase:** the app talks to Postgres through **`DATABASE_URL`** (Drizzle). Optional `SUPABASE_URL` / keys in `.env.example` are for future or client-side use with `@supabase/supabase-js`; they are not required for the current server-only DB path.
+- **Node:** if `npm install` warns about `EBADENGINE`, upgrade Node to a version that satisfies the dependency range (for example **22.13+** or current LTS), or the toolchain may behave unpredictably.
+
+### Ports and duplicate processes
+
+- **API** listens on **`PORT`** (default **3001**). A second `npm run dev:server` fails with `EADDRINUSE` until you stop the first server.
+- **Vite** defaults to **5173**. If that port is busy, Vite picks the next free port (for example **5174**) and prints the URL in the terminal.
+- **CORS** for the API allows `http://127.0.0.1:5173` and `5174` (see `src/server/index.ts`). If Vite uses another port, add it there or use the default ports by stopping duplicate `npm run dev` processes.
+
 | Service | URL |
 |---|---|
-| Frontend (Vite) | [http://127.0.0.1:5173](http://127.0.0.1:5173) |
+| Frontend (Vite) | [http://127.0.0.1:5173](http://127.0.0.1:5173) (or the URL Vite prints if 5173 is in use) |
 | API Server (Hono) | [http://localhost:3001/api/vibe](http://localhost:3001/api/vibe) |
 
 Or start them separately: `npm run dev` (frontend) and `npm run dev:server` (API).
+
+### Smoke test: AI schema generation
+
+With the API running and `OPENAI_API_KEY` set for the Node process:
+
+```bash
+curl -s -X POST http://localhost:3001/api/vibe \
+  -H "Content-Type: application/json" \
+  -d '{"intent":"generate","payload":{"prompt":"A tiny CRM with contacts and deals"}}'
+```
+
+You should get `success: true` and a `schema` object, or a `422` with validation `details` if the model output needs adjustment.
 
 ---
 
