@@ -209,7 +209,7 @@ For each successful `intent: "generate"` request, the API logs **`[VEEF Telemetr
 - **`t_val`**: `vibeModuleSchema.safeParse(...)` duration on the AI output.
 - **`t_dep`**: placeholder “DB deploy” delay (**40 ms** `setTimeout`) after validation succeeds.
 
-Automated latency sweep (50 HTTP round-trips: 5 enterprise-style prompts × 10 repetitions). With **`npm run dev:server`** already running:
+Automated sweep (50 HTTP round-trips: 5 enterprise-style prompts × 10 repetitions). The script reports **mean latency μ** and **sample σ** (client-side round-trip, I2IL proxy) plus **DVR** as the share of requests that returned HTTP 2xx. With **`npm run dev:server`** already running:
 
 ```bash
 npm run benchmark:veef

@@ -80,9 +80,11 @@ async function main(): Promise<void> {
   const σ = stdDevSample(latencies);
   const min = latencies.length ? Math.min(...latencies) : 0;
   const max = latencies.length ? Math.max(...latencies) : 0;
+  const n = latencies.length;
+  const dvr = n > 0 ? ((n - failures.length) / n) * 100 : 0;
 
   const table = [
-    "## VEEF benchmark — total HTTP cycle time",
+    "## VEEF benchmark — total HTTP cycle time (I2IL) and validity (DVR)",
     "",
     "| Metric | Value |",
     "|--------|-------|",
@@ -90,6 +92,7 @@ async function main(): Promise<void> {
     `| Tasks (prompts) | ${PROMPTS.length} |`,
     `| Repetitions per task | ${N_REPS} |`,
     `| Total requests (N) | ${latencies.length} |`,
+    `| DVR (HTTP 2xx rate, %) | ${dvr.toFixed(1)} |`,
     `| Failures | ${failures.length} |`,
     `| Mean latency μ (ms) | ${μ.toFixed(2)} |`,
     `| Std dev σ sample (ms) | ${σ.toFixed(2)} |`,
