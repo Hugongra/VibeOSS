@@ -215,7 +215,9 @@ Automated sweep (50 HTTP round-trips: 5 enterprise-style prompts × 10 repetitio
 npm run benchmark:veef
 ```
 
-Optional: `VEEF_BASE_URL=http://127.0.0.1:3001 npm run benchmark:veef` if your API listens elsewhere. The script prints a **Markdown table** (mean μ and sample standard deviation σ of total client-measured latency) suitable for pasting into a thesis appendix.
+The script runs via **`node --import tsx`** (not the `tsx` CLI) so output is reliable on **Windows / PowerShell / conda**. You should see a `[VEEF] Starting 50 requests…` line immediately; if nothing appears for minutes, the API is likely waiting on OpenAI — keep **`npm run dev:server`** running with a valid `OPENAI_API_KEY`.
+
+Optional env: `VEEF_BASE_URL`, `VEEF_REQUEST_TIMEOUT_MS` (default per request **180000**). The script prints a **Markdown table** (μ, σ, DVR) suitable for pasting into a thesis appendix.
 
 ---
 

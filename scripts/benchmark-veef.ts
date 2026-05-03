@@ -9,6 +9,8 @@
 
 const BASE_URL = process.env.VEEF_BASE_URL ?? "http://localhost:3001";
 const N_REPS = 10;
+/** Per-request ceiling (generate can be slow); fail fast if API is down */
+const REQUEST_TIMEOUT_MS = Number(process.env.VEEF_REQUEST_TIMEOUT_MS ?? 180_000);
 
 const PROMPTS: { id: string; prompt: string }[] = [
   {
@@ -54,14 +56,20 @@ function stdDevSample(values: number[]): number {
 
 async function oneRequest(prompt: string): Promise<{ ms: number; ok: boolean; status: number }> {
   const t0 = performance.now();
-  const res = await fetch(`${BASE_URL}/api/vibe`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ intent: "generate", payload: { prompt } }),
-  });
-  await res.json().catch(() => null);
-  const ms = performance.now() - t0;
-  return { ms, ok: res.ok, status: res.status };
+  try {
+    const res = await fetch(`${BASE_URL}/api/vibe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ intent: "generate", payload: { prompt } }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+    await res.json().catch(() => null);
+    const ms = performance.now() - t0;
+    return { ms, ok: res.ok, status: res.status };
+  } catch {
+    const ms = performance.now() - t0;
+    return { ms, ok: false, status: 0 };
+  }
 }
 
 async function main(): Promise<void> {
@@ -106,7 +114,8 @@ async function main(): Promise<void> {
     table.push("| Task | Rep # | HTTP status |");
     table.push("|------|-------|---------------|");
     for (const f of failures.slice(0, 15)) {
-      table.push(`| ${f.id} | ${f.rep} | ${f.status} |`);
+      const st = f.status === 0 ? "0 (network / timeout / refused)" : String(f.status);
+      table.push(`| ${f.id} | ${f.rep} | ${st} |`);
     }
     if (failures.length > 15) table.push(`| … | … | (${failures.length - 15} more) |`);
     table.push("");
@@ -116,7 +125,13 @@ async function main(): Promise<void> {
   console.log(md);
 }
 
-main().catch((err) => {
-  console.error(err);
+console.log(
+  `[VEEF] Starting ${N_REPS * PROMPTS.length} requests → ${BASE_URL}/api/vibe (timeout ${REQUEST_TIMEOUT_MS} ms each; set VEEF_BASE_URL / VEEF_REQUEST_TIMEOUT_MS to override)`
+);
+
+try {
+  await main();
+} catch (err) {
+  console.error("[VEEF] Fatal:", err);
   process.exit(1);
-});
+}
