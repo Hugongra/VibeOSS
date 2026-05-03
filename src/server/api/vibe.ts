@@ -19,8 +19,9 @@
  */
 
 import { z } from "zod";
-import { generateSchemaFromIntent } from "@/lib/kernel/schema-generator";
-import { validateVibeSchema } from "@/lib/kernel/validator";
+import { generateModuleObjectFromIntent } from "../kernel/schema-generator";
+import { validateVibeSchema, vibeModuleSchema } from "../kernel/validator";
+import type { VibeSchemaV1 } from "@shared/types";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -48,6 +49,32 @@ type IntentType = z.infer<typeof intentRequestSchema>["intent"];
 
 type IntentHandler = (payload: Record<string, unknown>) => Promise<ApiResponse>;
 
+function logVeefTelemetry(args: {
+  intent: string;
+  tGenMs: number;
+  tValMs: number;
+  tDepMs: number | null;
+  ok: boolean;
+  tokensUsed?: number;
+}) {
+  const dep =
+    args.tDepMs === null ? "skipped (validation failed)" : `${args.tDepMs.toFixed(2)} ms`;
+  const tok =
+    args.tokensUsed !== undefined ? String(args.tokensUsed) : "n/a";
+  console.log(
+    [
+      "[VEEF Telemetry]",
+      `intent=${args.intent}`,
+      `ok=${args.ok}`,
+      "",
+      `  t_gen (Vercel AI SDK):     ${args.tGenMs.toFixed(2)} ms`,
+      `  t_val (Zod safeParse):     ${args.tValMs.toFixed(2)} ms`,
+      `  t_dep (DB placeholder):    ${dep}`,
+      `  tokens_used:                 ${tok}`,
+    ].join("\n")
+  );
+}
+
 const handlers: Record<IntentType, IntentHandler> = {
   async generate(payload) {
     const prompt = payload.prompt;
@@ -62,22 +89,86 @@ const handlers: Record<IntentType, IntentHandler> = {
       ? (payload.existingEntities as string[])
       : undefined;
 
-    const result = await generateSchemaFromIntent({
+    const request = {
       prompt,
       context: existingEntities ? { existingEntities } : undefined,
-    });
+    };
 
-    if (!result.success) {
+    let tGenMs = 0;
+    let tValMs = 0;
+    let tDepMs: number | null = null;
+    let tokensUsed: number | undefined;
+    const tGenStart = performance.now();
+
+    try {
+      const { object, usage } = await generateModuleObjectFromIntent(request);
+      tGenMs = performance.now() - tGenStart;
+      tokensUsed = usage.totalTokens;
+
+      const tValStart = performance.now();
+      const zodResult = vibeModuleSchema.safeParse(object);
+      tValMs = performance.now() - tValStart;
+
+      if (!zodResult.success) {
+        const errors = zodResult.error.issues.map(
+          (issue) => `${issue.path.join(".")}: ${issue.message}`
+        );
+        logVeefTelemetry({
+          intent: "generate",
+          tGenMs,
+          tValMs,
+          tDepMs: null,
+          ok: false,
+          tokensUsed,
+        });
+        return {
+          status: 422,
+          body: {
+            error: "Schema generation failed",
+            details: errors,
+            rawJson: JSON.stringify(object, null, 2),
+          },
+        };
+      }
+
+      const tDepStart = performance.now();
+      await new Promise<void>((resolve) => setTimeout(resolve, 40));
+      tDepMs = performance.now() - tDepStart;
+
+      logVeefTelemetry({
+        intent: "generate",
+        tGenMs,
+        tValMs,
+        tDepMs,
+        ok: true,
+        tokensUsed,
+      });
+
+      return {
+        status: 200,
+        body: {
+          success: true,
+          schema: zodResult.data as VibeSchemaV1,
+          tokensUsed,
+        },
+      };
+    } catch (error) {
+      tGenMs = performance.now() - tGenStart;
+      const message =
+        error instanceof Error ? error.message : "Unknown error during generation";
+      logVeefTelemetry({
+        intent: "generate",
+        tGenMs,
+        tValMs,
+        tDepMs: null,
+        ok: false,
+        tokensUsed,
+      });
       return {
         status: 422,
-        body: { error: "Schema generation failed", details: result.errors },
+        body: { error: "Schema generation failed", details: [message] },
       };
     }
-
-    return {
-      status: 200,
-      body: { success: true, schema: result.schema, tokensUsed: result.tokensUsed },
-    };
   },
 
   async validate(payload) {

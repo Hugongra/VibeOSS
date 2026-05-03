@@ -201,6 +201,22 @@ curl -s -X POST http://localhost:3001/api/vibe \
 
 You should get `success: true` and a `schema` object, or a `422` with validation `details` if the model output needs adjustment.
 
+### VEEF — telemetry and benchmark (I2IL / DVR harness)
+
+For each successful `intent: "generate"` request, the API logs **`[VEEF Telemetry]`** to the server console with:
+
+- **`t_gen`**: Vercel AI SDK `generateObject` duration (model uses **`temperature: 0`** for maximum determinism).
+- **`t_val`**: `vibeModuleSchema.safeParse(...)` duration on the AI output.
+- **`t_dep`**: placeholder “DB deploy” delay (**40 ms** `setTimeout`) after validation succeeds.
+
+Automated latency sweep (50 HTTP round-trips: 5 enterprise-style prompts × 10 repetitions). With **`npm run dev:server`** already running:
+
+```bash
+npm run benchmark:veef
+```
+
+Optional: `VEEF_BASE_URL=http://127.0.0.1:3001 npm run benchmark:veef` if your API listens elsewhere. The script prints a **Markdown table** (mean μ and sample standard deviation σ of total client-measured latency) suitable for pasting into a thesis appendix.
+
 ---
 
 ## The Vibe-JSON Standard
@@ -236,6 +252,19 @@ Every application in VibeOS is defined by a single `vibe_schema_v1` document —
 This document describes entities, views, actions, and automations that drive the SDUI renderer and engines; **persisted CRUD** via the `query` / `mutate` API intents is not wired yet. See [`docs/examples/crm-vibe-schema-v1.json`](docs/examples/crm-vibe-schema-v1.json) for a full example.
 
 ---
+
+## 🧪 VibeOS Enterprise Evaluation Framework (VEEF)
+
+VibeOS isn't just an application; it's a measurable architectural shift. To prove the $O(\log N)$ scalability and track the Intent-to-Infrastructure Latency (I2IL), this repository includes the **VEEF Benchmarking Suite**.
+
+This suite executes the 5 benchmark tasks (T1-T5) 10 times ($N=10$) with `temperature: 0.0` to measure system determinism, logging the exact latency of the LLM generation, Zod validation, and Postgres deployment.
+
+### Run the Benchmark
+
+To execute the automated evaluation loop:
+```bash
+# Ensure your database is running and .env.local is loaded
+npm run benchmark:veef
 
 ## Star History
 

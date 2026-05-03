@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "benchmark:veef": "tsx scripts/benchmark-veef.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.0.0",
