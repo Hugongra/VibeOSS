@@ -215,7 +215,7 @@ Automated sweep (50 HTTP round-trips: 5 enterprise-style prompts × 10 repetitio
 npm run benchmark:veef
 ```
 
-The script runs via **`node --import tsx`** (not the `tsx` CLI) so output is reliable on **Windows / PowerShell / conda**. You should see a `[VEEF] Starting 50 requests…` line immediately; if nothing appears for minutes, the API is likely waiting on OpenAI — keep **`npm run dev:server`** running with a valid `OPENAI_API_KEY`.
+The script runs via **`node --import tsx`** (not the `tsx` CLI) so output is reliable on **Windows / PowerShell / conda**. After the startup lines it prints **one `[VEEF] n/50 …` line per request**; long gaps between lines are normal while each `generate` call waits on OpenAI (often several seconds to tens of seconds). Keep **`npm run dev:server`** running with a valid `OPENAI_API_KEY` until the final Markdown table appears.
 
 Optional env: `VEEF_BASE_URL`, `VEEF_REQUEST_TIMEOUT_MS` (default per request **180000**). The script prints a **Markdown table** (μ, σ, DVR) suitable for pasting into a thesis appendix.
 

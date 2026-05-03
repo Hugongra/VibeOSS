@@ -75,12 +75,19 @@ async function oneRequest(prompt: string): Promise<{ ms: number; ok: boolean; st
 async function main(): Promise<void> {
   const latencies: number[] = [];
   const failures: { id: string; rep: number; status: number }[] = [];
+  const total = N_REPS * PROMPTS.length;
+  let done = 0;
 
   for (let rep = 0; rep < N_REPS; rep++) {
     for (const { id, prompt } of PROMPTS) {
       const { ms, ok, status } = await oneRequest(prompt);
+      done += 1;
       latencies.push(ms);
       if (!ok) failures.push({ id, rep, status });
+      const tag = ok ? "OK " : "FAIL";
+      console.log(
+        `[VEEF] ${done}/${total}  ${id}  rep=${rep}  ${tag}  ${ms.toFixed(0)} ms  http=${status}`
+      );
     }
   }
 
@@ -125,8 +132,12 @@ async function main(): Promise<void> {
   console.log(md);
 }
 
+const totalReqs = N_REPS * PROMPTS.length;
 console.log(
-  `[VEEF] Starting ${N_REPS * PROMPTS.length} requests → ${BASE_URL}/api/vibe (timeout ${REQUEST_TIMEOUT_MS} ms each; set VEEF_BASE_URL / VEEF_REQUEST_TIMEOUT_MS to override)`
+  `[VEEF] Starting ${totalReqs} sequential requests → ${BASE_URL}/api/vibe (timeout ${REQUEST_TIMEOUT_MS} ms each).`
+);
+console.log(
+  `[VEEF] Each "generate" waits on OpenAI (often ~3–30 s). You will see one progress line per request; total wall time is commonly ${Math.ceil((totalReqs * 5) / 60)}–${Math.ceil((totalReqs * 25) / 60)} min. Do not interrupt.`
 );
 
 try {
