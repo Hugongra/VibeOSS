@@ -103,8 +103,9 @@ Intent (Natural Language)
 
 ```
 vibeoss/
-├── index.html                  # Vite entry point
-├── vite.config.ts              # Vite + React + Tailwind (aliases: @ → client, @shared)
+├── index.html                  # Vite entry (`/src/client/main.tsx`)
+├── vite.config.ts              # Vite + React + Tailwind (aliases: @ → client, @shared; `/api` → proxy :3001)
+├── drizzle.config.ts           # Drizzle Kit (loads `.env.local`; schema under `src/server/database/`)
 ├── src/
 │   ├── client/                 # React SPA (Vite)
 │   │   ├── main.tsx            # Bootstrap
@@ -115,6 +116,7 @@ vibeoss/
 │   │   └── lib/                # Client helpers (e.g. auth context)
 │   ├── server/                 # Hono API + kernel + engine (Node)
 │   │   ├── index.ts            # HTTP server + CORS + routes
+│   │   ├── lib.ts              # Barrel re-exports for consumers
 │   │   ├── api/vibe.ts         # Intent handler (generate, validate, …)
 │   │   ├── kernel/             # Parser, validator, schema generator (OpenAI)
 │   │   ├── engine/             # Actions + automations
@@ -158,9 +160,21 @@ npm run dev:all
 
 ### Environment notes
 
-- **OpenAI:** `intent: "generate"` uses the Vercel AI SDK with `gpt-4o`. The API key must be available to the **Node** process (`OPENAI_API_KEY`). Vite only injects variables prefixed with `VITE_` into the browser bundle.
-- **Supabase:** the app talks to Postgres through **`DATABASE_URL`** (Drizzle). Optional `SUPABASE_URL` / keys in `.env.example` are for future or client-side use with `@supabase/supabase-js`; they are not required for the current server-only DB path.
-- **Node:** if `npm install` warns about `EBADENGINE`, upgrade Node to a version that satisfies the dependency range (for example **22.13+** or current LTS), or the toolchain may behave unpredictably.
+- **`.env.local`:** copy from `.env.example` before running `npm run dev:server` or `npm run dev:all`. The `dev:server` script uses Node’s **`--env-file=.env.local`** (Node **20.6+**) so `OPENAI_API_KEY`, `DATABASE_URL`, and `PORT` are available to the API process. **`npm run db:migrate`** loads the same file via `drizzle.config.ts` (`dotenv`).
+- **OpenAI:** `intent: "generate"` uses the Vercel AI SDK with `gpt-4o` (`src/server/kernel/schema-generator.ts`). Vite only injects variables prefixed with `VITE_` into the browser bundle.
+- **Supabase:** use **`DATABASE_URL`** (Postgres URI from Supabase → Project Settings → Database). Optional `SUPABASE_URL` / keys in `.env.example` are for future or client-side `@supabase/supabase-js`; they are not used by the current Drizzle-only server path.
+- **Node:** if `npm install` warns about `EBADENGINE`, upgrade Node (for example **22.13+** or current LTS) so dependencies and `--env-file` behave as expected.
+
+### API intents (`POST /api/vibe`)
+
+| Intent | Status |
+|--------|--------|
+| `generate` | Implemented — NL → `vibe_schema_v1` (requires `OPENAI_API_KEY`) |
+| `validate` | Implemented — Zod validation of a schema object |
+| `query` | **501** — not wired to the JSONB store yet |
+| `mutate` | **501** — not wired to the JSONB store yet |
+
+Other routes: `POST /api/vibe/execute`, `POST /api/vibe/automate`, `GET /api/vibe/providers` (see `src/server/index.ts`).
 
 ### Ports and duplicate processes
 
@@ -219,7 +233,7 @@ Every application in VibeOS is defined by a single `vibe_schema_v1` document —
 }
 ```
 
-This single document generates: database table, CRUD API, table view, form, detail page, **and** automated workflows. See [`docs/examples/crm-vibe-schema-v1.json`](docs/examples/crm-vibe-schema-v1.json) for a full example.
+This document describes entities, views, actions, and automations that drive the SDUI renderer and engines; **persisted CRUD** via the `query` / `mutate` API intents is not wired yet. See [`docs/examples/crm-vibe-schema-v1.json`](docs/examples/crm-vibe-schema-v1.json) for a full example.
 
 ---
 

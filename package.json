@@ -6,7 +6,7 @@
   "description": "VibeOS — An open-source, metadata-driven platform that compiles natural language intent into dynamic applications.",
   "scripts": {
     "dev": "vite",
-    "dev:server": "tsx watch src/server/index.ts",
+    "dev:server": "node --watch --import tsx --env-file=.env.local src/server/index.ts",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
