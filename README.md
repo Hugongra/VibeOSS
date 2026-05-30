@@ -13,7 +13,11 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-JSONB-336791?logo=postgresql)](https://postgresql.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
+![VibeOS landing page — compile intent into applications](docs/images/homepage-screenshot.png)
+
 </div>
+
+> **Academic Context:** This repository is the functional prototype developed as part of the Bachelor Thesis (TFG) *"Developing and Evaluating a Functional Prototype of an Agentic AI Programmer for Enterprise Software"* at La Salle - Universitat Ramon Llull (Barcelona, 2025-2026). It serves as empirical evidence for the research findings presented in the thesis. The comparative claims below (e.g., "10x Faster Than Salesforce") represent the architectural vision of the project and are contextualized with empirical data in the academic document. See the [/tfg](./tfg) directory for the thesis.
 
 ---
 
@@ -44,21 +48,21 @@ Intent (Natural Language)
         │
         ▼
 ┌─────────────────┐
-│  Schema Generator │  ← Vercel AI SDK + GPT-4o
-│  (LLM Compiler)  │
+│  Schema Generator │  ← Vercel AI SDK + Claude Haiku 4.5
+│  (LLM Compiler)  │     + Recursive Self-Correction (≤3 attempts)
 └────────┬────────┘
          │ vibe_schema_v1
          ▼
 ┌─────────────────┐
-│    Validator     │  ← Zod Schema Validation
-│  (Safety Net)    │
+│    Validator     │  ← Zod (Deterministic Compiler Shell)
+│  (Safety Net)    │     errors fed back to LLM on retry
 └────────┬────────┘
          │ Validated Schema
          ▼
-┌─────────────────┐     ┌──────────────┐
-│   Vibe Parser   │────▶│  PostgreSQL   │
-│ (Runtime Compiler)│    │  JSONB Store  │
-└────────┬────────┘     └──────────────┘
+┌─────────────────┐     ┌──────────────────────────┐
+│   Vibe Parser   │────▶│  PostgreSQL JSONB Store   │
+│ (Runtime Compiler)│    │  vibe_modules · vibe_records │
+└────────┬────────┘     └──────────────────────────┘
          │ RuntimeModule
          ▼
 ┌─────────────────┐     ┌──────────────────┐
@@ -91,8 +95,8 @@ Intent (Natural Language)
 - **Language:** TypeScript (strict mode, no `any`)
 - **Database:** PostgreSQL with JSONB for dynamic entities (works with **Supabase**)
 - **ORM:** Drizzle ORM
-- **AI:** Vercel AI SDK with OpenAI GPT-4o
-- **Validation:** Zod
+- **AI:** Vercel AI SDK — **OpenRouter** (default: `google/gemini-2.0-flash-001`) or Anthropic direct; set `OPENROUTER_API_KEY` or `ANTHROPIC_API_KEY` in `.env.local`
+- **Validation:** Zod (`vibe_schema_v1` in `src/shared/schemas/`)
 - **Providers:** Email (Resend), Webhook (HTTP), Slack
 - **UI:** Shadcn/UI + Tailwind CSS v4
 - **Design:** Dark-mode first, Linear.app aesthetic
@@ -118,11 +122,14 @@ vibeoss/
 │   │   ├── index.ts            # HTTP server + CORS + routes
 │   │   ├── lib.ts              # Barrel re-exports for consumers
 │   │   ├── api/vibe.ts         # Intent handler (generate, validate, …)
-│   │   ├── kernel/             # Parser, validator, schema generator (OpenAI)
+│   │   ├── kernel/             # Parser, schema generator, self-correction, record validator
 │   │   ├── engine/             # Actions + automations
 │   │   ├── providers/          # Email, Slack, webhook…
-│   │   └── database/           # Drizzle + migrations (Postgres / Supabase)
-│   └── shared/                 # Types shared by client and server
+│   │   └── database/           # Drizzle, vibe-storage, migrations (Postgres / Supabase)
+│   └── shared/                 # Types + Zod schemas (client + server)
+├── scripts/
+│   ├── run-benchmark.ts        # VEEF thesis benchmark (T1–T5 × 10 reps)
+│   └── benchmark-prompts.json
 ├── docs/
 │   ├── architecture/
 │   │   ├── metadata-spec.yaml
@@ -148,37 +155,99 @@ npm install
 # Set up environment variables
 cp .env.example .env.local
 # Edit .env.local — at minimum for local dev:
-#   OPENAI_API_KEY   → required for POST /api/vibe intent "generate"
+#   ANTHROPIC_API_KEY → required for POST /api/vibe intent "generate"
 #   DATABASE_URL     → Postgres connection string (Supabase: Project Settings → Database → URI)
 
 # Run database migrations
 npm run db:migrate
 
-# Start everything (frontend + API server)
+# Start everything (frontend + API server — recommended)
 npm run dev:all
 ```
 
-### Environment notes
+Open the URL Vite prints (usually [http://127.0.0.1:5173](http://127.0.0.1:5173)), sign in with any email (mock auth), go to **Builder**, and describe your app (e.g. *"build a CRM"*).
 
-- **`.env.local`:** copy from `.env.example` before running `npm run dev:server` or `npm run dev:all`. The `dev:server` script uses Node’s **`--env-file=.env.local`** (Node **20.6+**) so `OPENAI_API_KEY`, `DATABASE_URL`, and `PORT` are available to the API process. **`npm run db:migrate`** loads the same file via `drizzle.config.ts` (`dotenv`).
-- **OpenAI:** `intent: "generate"` uses the Vercel AI SDK with `gpt-4o` (`src/server/kernel/schema-generator.ts`). Vite only injects variables prefixed with `VITE_` into the browser bundle.
-- **Supabase:** use **`DATABASE_URL`** (Postgres URI from Supabase → Project Settings → Database). Optional `SUPABASE_URL` / keys in `.env.example` are for future or client-side `@supabase/supabase-js`; they are not used by the current Drizzle-only server path.
-- **Node:** if `npm install` warns about `EBADENGINE`, upgrade Node (for example **22.13+** or current LTS) so dependencies and `--env-file` behave as expected.
+### What you need locally
+
+| Requirement | Required for |
+|---|---|
+| **Node 20.6+** (22 LTS recommended) | Vite, Hono, `--env-file` |
+| **`ANTHROPIC_API_KEY`** | `intent: generate` (LLM schema generation) |
+| **`DATABASE_URL`** + `npm run db:migrate` | Persisting modules & records (PostgreSQL / Supabase) |
+
+**Without Postgres:** generation can still return a schema, but persistence fails (HTTP 500) and the Builder preview runs in **in-memory** mode.  
+**Without the API server:** the frontend loads but `/api/vibe` calls fail — run **`npm run dev:all`** or both `npm run dev` and `npm run dev:server`.
+
+### Environment variables (`.env.local`)
+
+| Variable | Required | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Yes (for generate) | Anthropic API key |
+| `DATABASE_URL` | Yes (for persist) | PostgreSQL URI (Supabase: Project Settings → Database) |
+| `PORT` | No | API port (default **3001**) |
+| `SCHEMA_GENERATOR_MAX_RETRIES` | No | Self-correction attempts after Zod rejection (default **3**) |
+| `VIBEOS_DEFAULT_ORG_ID` | No | Fixed org UUID; otherwise a `"default"` org is created |
+
+See [`.env.example`](.env.example) for optional provider keys (Resend, Slack, Supabase client).
 
 ### API intents (`POST /api/vibe`)
 
-| Intent | Status |
-|--------|--------|
-| `generate` | Implemented — NL → `vibe_schema_v1` (requires `OPENAI_API_KEY`) |
-| `validate` | Implemented — Zod validation of a schema object |
-| `query` | **501** — not wired to the JSONB store yet |
-| `mutate` | **501** — not wired to the JSONB store yet |
+| Intent | Status | Description |
+|--------|--------|-------------|
+| `generate` | ✅ | NL → `vibe_schema_v1` via Claude; Zod validation; **Recursive Self-Correction** (up to 3 attempts); persists to `vibe_modules`; returns `moduleId` + `metadata` |
+| `validate` | ✅ | Zod validation of a schema object |
+| `query` | ✅ | Read records from `vibe_records` (JSONB filters, pagination) |
+| `mutate` | ✅ | Create / update / soft-delete records; validates payload against entity schema |
 
 Other routes: `POST /api/vibe/execute`, `POST /api/vibe/automate`, `GET /api/vibe/providers` (see `src/server/index.ts`).
 
+#### `generate` response metadata
+
+```json
+{
+  "success": true,
+  "schema": { "...": "..." },
+  "moduleId": "uuid",
+  "metadata": {
+    "attemptsUsed": 2,
+    "selfCorrected": true,
+    "attemptTimingsMs": [12000, 8500]
+  }
+}
+```
+
+#### `mutate` payload example
+
+```json
+{
+  "intent": "mutate",
+  "payload": {
+    "moduleId": "<uuid from generate>",
+    "entity": "contact",
+    "operation": "create",
+    "data": { "name": "Alice", "email": "alice@example.com" }
+  }
+}
+```
+
+#### `query` payload example
+
+```json
+{
+  "intent": "query",
+  "payload": {
+    "moduleId": "<uuid>",
+    "entity": "contact",
+    "filter": { "name": "Alice" },
+    "limit": 50,
+    "offset": 0
+  }
+}
+```
+
 ### Ports and duplicate processes
 
-- **API** listens on **`PORT`** (default **3001**). A second `npm run dev:server` fails with `EADDRINUSE` until you stop the first server.
+- **API** listens on **`PORT`** (default **3001**). Only one `dev:server` instance per port; the server handles graceful shutdown on restart (`node --watch`).
 - **Vite** defaults to **5173**. If that port is busy, Vite picks the next free port (for example **5174**) and prints the URL in the terminal.
 - **CORS** for the API allows `http://127.0.0.1:5173` and `5174` (see `src/server/index.ts`). If Vite uses another port, add it there or use the default ports by stopping duplicate `npm run dev` processes.
 
@@ -187,11 +256,18 @@ Other routes: `POST /api/vibe/execute`, `POST /api/vibe/automate`, `GET /api/vib
 | Frontend (Vite) | [http://127.0.0.1:5173](http://127.0.0.1:5173) (or the URL Vite prints if 5173 is in use) |
 | API Server (Hono) | [http://localhost:3001/api/vibe](http://localhost:3001/api/vibe) |
 
-Or start them separately: `npm run dev` (frontend) and `npm run dev:server` (API).
+Or start them separately: `npm run dev` (frontend) and `npm run dev:server` (API). **Both must be running** for the Builder to work.
 
-### Smoke test: AI schema generation
+### Builder & interactive preview
 
-With the API running and `OPENAI_API_KEY` set for the Node process:
+- **`/builder`** — chat + live SDUI preview (table, form, detail views from generated schema).
+- After a successful **generate**, the preview badge shows **PostgreSQL** when `moduleId` is returned; CRUD uses `query` / `mutate` against `vibe_records`.
+- Without DB persistence, preview falls back to **in-memory** mode (data lost on reload).
+- **Auth:** mock login only (`localStorage`); any email/password works. The API has no auth middleware yet.
+
+### Smoke tests
+
+**Generate** (requires `ANTHROPIC_API_KEY`):
 
 ```bash
 curl -s -X POST http://localhost:3001/api/vibe \
@@ -199,25 +275,62 @@ curl -s -X POST http://localhost:3001/api/vibe \
   -d '{"intent":"generate","payload":{"prompt":"A tiny CRM with contacts and deals"}}'
 ```
 
-You should get `success: true` and a `schema` object, or a `422` with validation `details` if the model output needs adjustment.
+Expect `success: true`, `schema`, `moduleId`, and `metadata.attemptsUsed`. On failure after 3 self-correction attempts: HTTP **422** with `metadata.validationErrors`.
+
+**Create a record** (use `moduleId` and entity names from the schema above):
+
+```bash
+curl -s -X POST http://localhost:3001/api/vibe \
+  -H "Content-Type: application/json" \
+  -d '{"intent":"mutate","payload":{"moduleId":"<uuid>","entity":"contact","operation":"create","data":{"name":"Alice","email":"alice@example.com"}}}'
+```
+
+**Query records:**
+
+```bash
+curl -s -X POST http://localhost:3001/api/vibe \
+  -H "Content-Type: application/json" \
+  -d '{"intent":"query","payload":{"moduleId":"<uuid>","entity":"contact"}}'
+```
+
+### Recursive Self-Correction (§5.3.1)
+
+When Zod rejects LLM output, the kernel feeds **semantic error hints** (not raw paths) back to Claude and retries up to **`SCHEMA_GENERATOR_MAX_RETRIES`** (default 3). Server logs:
+
+```
+[Self-correction] Attempt 2/3 — previous error: In entity 'Lead', field 'Revenue': type 'CurrencyString' is not valid...
+```
+
+Implementation: `src/server/kernel/schema-generator.ts` (`generateSchemaWithRetry`, `formatZodErrorForLLM`, `buildMessages`). Unit tests: `src/server/kernel/__tests__/self-correction.test.ts`.
 
 ### VEEF — telemetry and benchmark (I2IL / DVR harness)
 
-For each successful `intent: "generate"` request, the API logs **`[VEEF Telemetry]`** to the server console with:
+For each `intent: "generate"` request, the API logs **`[VEEF Telemetry]`**:
 
-- **`t_gen`**: Vercel AI SDK `generateObject` duration (model uses **`temperature: 0`** for maximum determinism).
-- **`t_val`**: `vibeModuleSchema.safeParse(...)` duration on the AI output.
-- **`t_dep`**: placeholder “DB deploy” delay (**40 ms** `setTimeout`) after validation succeeds.
+- **`t_gen`**: LLM generation duration (includes self-correction retries)
+- **`t_val`**: Zod `safeParse` duration
+- **`t_dep`**: PostgreSQL persist duration (`vibe_modules` insert)
+- **`self_correction_attempts`**: e.g. `2 (self-corrected)`
 
-Automated sweep (50 HTTP round-trips: 5 enterprise-style prompts × 10 repetitions). The script reports **mean latency μ** and **sample σ** (client-side round-trip, I2IL proxy) plus **DVR** as the share of requests that returned HTTP 2xx. With **`npm run dev:server`** already running:
+**Thesis benchmark** (5 prompts T1–T5 × 10 repetitions → `results/benchmark-results.json`):
+
+```bash
+npm run benchmark
+```
+
+Records per run: `attempts_used`, `self_corrected`, `attempt_timings_ms`, HTTP status, latency. Env: `BENCHMARK_BASE_URL`, `BENCHMARK_REQUEST_TIMEOUT_MS`, `SCHEMA_GENERATOR_MAX_RETRIES`.
+
+**Quick VEEF sweep** (alternate prompts, Markdown table output):
 
 ```bash
 npm run benchmark:veef
 ```
 
-The script runs via **`node --import tsx`** (not the `tsx` CLI) so output is reliable on **Windows / PowerShell / conda**. After the startup lines it prints **one `[VEEF] n/50 …` line per request**; long gaps between lines are normal while each `generate` call waits on OpenAI (often several seconds to tens of seconds). Keep **`npm run dev:server`** running with a valid `OPENAI_API_KEY` until the final Markdown table appears.
+**Unit tests** (no API keys required):
 
-Optional env: `VEEF_BASE_URL`, `VEEF_REQUEST_TIMEOUT_MS` (default per request **180000**). The script prints a **Markdown table** (μ, σ, DVR) suitable for pasting into a thesis appendix.
+```bash
+npm run test
+```
 
 ---
 
@@ -251,22 +364,34 @@ Every application in VibeOS is defined by a single `vibe_schema_v1` document —
 }
 ```
 
-This document describes entities, views, actions, and automations that drive the SDUI renderer and engines; **persisted CRUD** via the `query` / `mutate` API intents is not wired yet. See [`docs/examples/crm-vibe-schema-v1.json`](docs/examples/crm-vibe-schema-v1.json) for a full example.
+This document describes entities, views, actions, and automations that drive the SDUI renderer and engines. **Persisted CRUD** is available via the `query` / `mutate` API intents against PostgreSQL JSONB (`vibe_records.data`). See [`docs/examples/crm-vibe-schema-v1.json`](docs/examples/crm-vibe-schema-v1.json) for a full example.
 
 ---
 
-## 🧪 VibeOS Enterprise Evaluation Framework (VEEF)
+## VibeOS Enterprise Evaluation Framework (VEEF)
 
-VibeOS isn't just an application; it's a measurable architectural shift. To prove the $O(\log N)$ scalability and track the Intent-to-Infrastructure Latency (I2IL), this repository includes the **VEEF Benchmarking Suite**.
+VibeOS includes a measurable evaluation harness for the thesis: **Schema Validity (SV)**, **Database Integrity (DBI)**, **UI Render Consistency (URC)**, and **Constraint Enforcement (CE)**.
 
-This suite executes the 5 benchmark tasks (T1-T5) 10 times ($N=10$) with `temperature: 0.0` to measure system determinism, logging the exact latency of the LLM generation, Zod validation, and Postgres deployment.
+The benchmark suite runs tasks **T1–T5** (schema generation, UI mapping, relations, constraints, E2E module) **10 times each** with `temperature: 0` and logs generation, validation, persistence, and self-correction metrics.
 
-### Run the Benchmark
+### Run the benchmark
 
-To execute the automated evaluation loop:
 ```bash
-# Ensure your database is running and .env.local is loaded
-npm run benchmark:veef
+# Terminal 1 — API must be running with ANTHROPIC_API_KEY + DATABASE_URL
+npm run dev:server
+
+# Terminal 2
+npm run benchmark
+```
+
+Results are written to **`results/benchmark-results.json`**. Summary includes **DVR** (2xx rate per task), **self-correction rate**, and mean attempts per task.
+
+```bash
+npm run test          # 22 unit tests (Zod, normalization, self-correction mocks)
+npm run benchmark:veef  # alternate 5×10 sweep with Markdown table output
+```
+
+---
 
 ## Star History
 
