@@ -1,0 +1,152 @@
+[
+  {
+    "id": "L1-01",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "CRM",
+    "title": "Basic Lead Entity",
+    "intent": "generate",
+    "prompt": "Create a SolarLead entity with 5 fields: Name (String), Email (Regex-validated), CreatedDate (ISO), Status (Enum: New/Contacted/Qualified/Lost), and Revenue (Currency, numeric).",
+    "successCriteria": {
+      "sv": "Zod passes all 5 field types",
+      "dbi": "JSONB row inserted",
+      "urc": "Form renders 5 inputs",
+      "ce": "Status only accepts enum values"
+    }
+  },
+  {
+    "id": "L1-02",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "CRM",
+    "title": "SDUI Form Generation",
+    "intent": "generate",
+    "prompt": "Generate a Server-Driven UI form configuration for the SolarLead entity, including a date-picker for CreatedDate and a currency input for Revenue.",
+    "successCriteria": {
+      "sv": "Views block valid",
+      "dbi": null,
+      "urc": "Renderer paints date-picker + currency input",
+      "ce": "Required validation enforced on Email"
+    }
+  },
+  {
+    "id": "L1-03",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "Project Mgmt",
+    "title": "Project Entity",
+    "intent": "generate",
+    "prompt": "Create a Project entity with fields: Title (String, required), Description (Text), StartDate (ISO), EndDate (ISO), and Priority (Enum: Low/Medium/High/Critical).",
+    "successCriteria": {
+      "sv": "All 5 fields valid",
+      "dbi": "Row persisted",
+      "urc": "Form renders with textarea",
+      "ce": "Priority rejects invalid values"
+    }
+  },
+  {
+    "id": "L1-04",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "HR",
+    "title": "Employee Record",
+    "intent": "generate",
+    "prompt": "Create an Employee entity with: FullName (String), Email (Regex), Department (Enum: Engineering/Sales/Marketing/Operations/HR), HireDate (ISO), and Salary (Currency).",
+    "successCriteria": {
+      "sv": "Enum has 5 values",
+      "dbi": "JSONB persisted",
+      "urc": "Department renders as dropdown",
+      "ce": "Salary rejects negative values"
+    }
+  },
+  {
+    "id": "L1-05",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "Inventory",
+    "title": "Product Catalog Entry",
+    "intent": "generate",
+    "prompt": "Create a Product entity with: SKU (String, unique), ProductName (String), Category (Enum: Electronics/Furniture/Software/Services), UnitPrice (Currency), and InStock (Boolean).",
+    "successCriteria": {
+      "sv": "Boolean type validated",
+      "dbi": "Unique constraint on SKU",
+      "urc": "InStock renders as toggle",
+      "ce": "UnitPrice rejects non-numeric"
+    }
+  },
+  {
+    "id": "L1-06",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "Support",
+    "title": "Support Ticket",
+    "intent": "generate",
+    "prompt": "Create a Ticket entity with: Subject (String, required), Description (Text), Priority (Enum: P1/P2/P3/P4), Channel (Enum: Email/Phone/Chat/Portal), and CreatedAt (ISO, auto-generated).",
+    "successCriteria": {
+      "sv": "Two enum fields validated",
+      "dbi": "CreatedAt has default value",
+      "urc": "Priority renders with color-coded badges",
+      "ce": "Subject required"
+    }
+  },
+  {
+    "id": "L1-07",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "CRM",
+    "title": "Contact with Validation",
+    "intent": "generate",
+    "prompt": "Create a Contact entity with: FirstName (String), LastName (String), Phone (Regex: international format), Email (Regex), and PreferredLanguage (Enum: EN/ES/FR/DE/PT).",
+    "successCriteria": {
+      "sv": "Two regex validations pass",
+      "dbi": "Row persisted",
+      "urc": "Phone renders with format hint",
+      "ce": "Invalid phone rejected"
+    }
+  },
+  {
+    "id": "L1-08",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "Project Mgmt",
+    "title": "Milestone Entity",
+    "intent": "generate",
+    "prompt": "Create a Milestone entity with: Name (String), DueDate (ISO), Status (Enum: Pending/InProgress/Completed/Overdue), and Completion (Number, 0-100).",
+    "successCriteria": {
+      "sv": "Number range constraint validated",
+      "dbi": "Row persisted",
+      "urc": "Completion renders as progress bar",
+      "ce": "Value >100 rejected"
+    }
+  },
+  {
+    "id": "L1-09",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "HR",
+    "title": "Leave Request",
+    "intent": "generate",
+    "prompt": "Create a LeaveRequest entity with: EmployeeName (String), LeaveType (Enum: Vacation/Sick/Personal/Parental), StartDate (ISO), EndDate (ISO), and DaysRequested (Number).",
+    "successCriteria": {
+      "sv": "All types valid",
+      "dbi": "Row persisted",
+      "urc": "Date range renders as dual picker",
+      "ce": "DaysRequested rejects 0 or negative"
+    }
+  },
+  {
+    "id": "L1-10",
+    "level": "L1",
+    "levelLabel": "Atomic",
+    "domain": "Inventory",
+    "title": "Warehouse Location",
+    "intent": "generate",
+    "prompt": "Create a Warehouse entity with: Code (String, unique), City (String), Country (String), Capacity (Number), and IsActive (Boolean).",
+    "successCriteria": {
+      "sv": "Unique + boolean validated",
+      "dbi": "Unique constraint enforced",
+      "urc": "IsActive renders as toggle",
+      "ce": "Capacity rejects negative"
+    }
+  }
+]

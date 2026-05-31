@@ -1,0 +1,32 @@
+[
+  {
+    "id": "T1",
+    "name": "Schema Generation",
+    "intent": "generate",
+    "prompt": "Create a 'SolarLead' entity with 5 fields: Name (String, required), Email (String, regex-validated for email format), CreatedDate (ISO date string), Status (Enum with values: New, Contacted, Qualified, Lost), and Revenue (Currency, numeric, minimum 0)."
+  },
+  {
+    "id": "T2",
+    "name": "UI Mapping",
+    "intent": "generate",
+    "prompt": "Generate a Server-Driven UI (SDUI) configuration for the 'SolarLead' form. Map Name to a text input, Email to an email input with validation, CreatedDate to a date-picker component, Status to a dropdown select, and Revenue to a currency input with numeric formatting."
+  },
+  {
+    "id": "T3",
+    "name": "Relational Logic",
+    "intent": "generate",
+    "prompt": "Define a 1:N relationship between an 'Account' entity and a 'SolarLead' entity. Account has: Name (String), Industry (Enum: Solar, Wind, Hydro), Website (String). Each Account can have multiple SolarLeads. Include foreign key constraint with cascade delete."
+  },
+  {
+    "id": "T4",
+    "name": "Constraint Engineering",
+    "intent": "generate",
+    "prompt": "Create a 'Lead' entity with Status (Enum: New, Contacted, Qualified, Closed-Won, Closed-Lost) and Revenue (Currency, numeric). Add a validation constraint: Status cannot be changed to 'Closed-Won' if Revenue is null or zero. The constraint must be enforced at the schema validation level."
+  },
+  {
+    "id": "T5",
+    "name": "E2E Module Generation",
+    "intent": "generate",
+    "prompt": "Build a complete 'Task Management' module from this single prompt. It must include: a 'Project' entity (Name, Description, Status with workflow Draft>Active>Completed), a 'Task' entity (Title, Description, Assignee, Status: Todo/InProgress/Done, DueDate, Priority: Low/Medium/High), a 1:N relationship from Project to Tasks, a constraint that Project cannot be marked Completed if any Task is not Done, SDUI views for both entities including a table view and form view, and a create action for both entities."
+  }
+]

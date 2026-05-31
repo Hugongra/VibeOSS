@@ -40,7 +40,8 @@ export {
 export {
   validateVibeSchema,
   validateVibeSchemaFromString,
-} from "./kernel/validator";
+  vibeModuleSchema,
+} from "@shared/schemas";
 
 export {
   generateSchemaFromIntent,

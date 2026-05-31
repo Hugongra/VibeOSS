@@ -1,0 +1,6068 @@
+[
+  {
+    "task_id": "L1-01",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 11147.5604,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-leads",
+        "description": "solar leads module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "New",
+                  "Contacted",
+                  "Qualified",
+                  "Lost"
+                ]
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": false
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "88581d44-8c7d-4be4-bd4e-e835e1a565f2",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2952,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2844.6094000000157,
+          6675.2089999999735
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2844.6094000000157,
+      6675.2089999999735
+    ]
+  },
+  {
+    "task_id": "L1-01",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 9160.459400000002,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-leads",
+        "description": "solar leads module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "New",
+                  "Contacted",
+                  "Qualified",
+                  "Lost"
+                ]
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": false
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "b4437157-b60e-4c3a-ae4f-15cb229fcd1c",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2952,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          5043.426500000001,
+          2581.120200000005
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      5043.426500000001,
+      2581.120200000005
+    ]
+  },
+  {
+    "task_id": "L1-01",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 6939.796200000001,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-leads",
+        "description": "solar leads module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "New",
+                  "Contacted",
+                  "Qualified",
+                  "Lost"
+                ]
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": false
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "1af710ea-9e3f-4a3c-a10d-7ce7f402c9cd",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2952,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2868.011700000032,
+          2494.4402999999584
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2868.011700000032,
+      2494.4402999999584
+    ]
+  },
+  {
+    "task_id": "L1-01",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 6861.0789,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-leads",
+        "description": "solar leads module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "New",
+                  "Contacted",
+                  "Qualified",
+                  "Lost"
+                ]
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": false
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "d43a4181-7a8a-4a08-96e8-fb1753a9c296",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2952,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2705.1132000000216,
+          2631.056600000011
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2705.1132000000216,
+      2631.056600000011
+    ]
+  },
+  {
+    "task_id": "L1-01",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 6901.825199999999,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-leads",
+        "description": "solar leads module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "New",
+                  "Contacted",
+                  "Qualified",
+                  "Lost"
+                ]
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": false
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "status",
+                "revenue",
+                "created_date"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "bbe39e65-146e-4e17-a20a-1cae0683e580",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2952,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2712.2037000000128,
+          2482.460300000035
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2712.2037000000128,
+      2482.460300000035
+    ]
+  },
+  {
+    "task_id": "L1-02",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 2918.3427999999985,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-lead",
+        "description": "solar lead module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "name",
+                "label": "Lead Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": false
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": false
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "New",
+                  "Qualified",
+                  "Proposal",
+                  "Won",
+                  "Lost"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "bfe97d2f-9dfa-460e-9900-48215713cf84",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1170,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2887.236600000004
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2887.236600000004
+    ]
+  },
+  {
+    "task_id": "L1-02",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 3139.684500000003,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-lead",
+        "description": "solar lead module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "name",
+                "label": "Lead Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": false
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": false
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "New",
+                  "Qualified",
+                  "Proposal",
+                  "Won",
+                  "Lost"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "4fb41065-3d6d-430f-93f2-8075fe96f4de",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1170,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3121.011600000027
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3121.011600000027
+    ]
+  },
+  {
+    "task_id": "L1-02",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 3579.860099999998,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-lead",
+        "description": "solar lead module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "name",
+                "label": "Lead Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": false
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": false
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "New",
+                  "Qualified",
+                  "Proposal",
+                  "Won",
+                  "Lost"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "1a47c09a-e57e-467c-b5c2-60310094dba5",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1170,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3557.743599999987
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3557.743599999987
+    ]
+  },
+  {
+    "task_id": "L1-02",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 3209.5849000000017,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-lead",
+        "description": "solar lead module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "name",
+                "label": "Lead Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": false
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": false
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "New",
+                  "Qualified",
+                  "Proposal",
+                  "Won",
+                  "Lost"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "27df9d49-02f8-4937-aae3-dac5c757136e",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1170,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3189.1590000000433
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3189.1590000000433
+    ]
+  },
+  {
+    "task_id": "L1-02",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 3211.997599999988,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "solar-lead",
+        "description": "solar lead module",
+        "entities": [
+          {
+            "name": "solar_lead",
+            "label": "Solar Lead",
+            "pluralLabel": "Solar Leads",
+            "description": "Track solar energy sales leads",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "name",
+                "label": "Lead Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": false
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": false
+              },
+              {
+                "name": "created_date",
+                "label": "Created Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "revenue",
+                "label": "Revenue",
+                "type": "currency",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "New",
+                  "Qualified",
+                  "Proposal",
+                  "Won",
+                  "Lost"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "solar_lead_table",
+            "label": "Solar Leads Table",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "solar_lead_form",
+            "label": "Solar Lead Form",
+            "entity": "solar_lead",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "email",
+                "phone",
+                "created_date",
+                "revenue",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Solar Leads",
+            "icon": "zap",
+            "view": "solar_lead_table"
+          }
+        ]
+      },
+      "moduleId": "6af8c0c8-29c2-42f2-9c8a-0f9c4126b010",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1170,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3186.8617000000086
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3186.8617000000086
+    ]
+  },
+  {
+    "task_id": "L1-03",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 2781.5636000000086,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "project-management",
+        "description": "project management module",
+        "entities": [
+          {
+            "name": "project",
+            "label": "Project",
+            "pluralLabel": "Projects",
+            "description": "Manage projects with timeline and priority",
+            "fields": [
+              {
+                "name": "title",
+                "label": "Title",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Low",
+                  "Medium",
+                  "High",
+                  "Critical"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "projects_table",
+            "label": "Projects",
+            "entity": "project",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "title",
+                "priority",
+                "start_date",
+                "end_date"
+              ]
+            }
+          },
+          {
+            "name": "project_form",
+            "label": "Project Form",
+            "entity": "project",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "title",
+                "description",
+                "start_date",
+                "end_date",
+                "priority"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Projects",
+            "icon": "folder",
+            "view": "projects_table"
+          }
+        ]
+      },
+      "moduleId": "a791abb4-fb71-4bf7-81bd-a740c7cfaf1e",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1100,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2765.055400000012
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2765.055400000012
+    ]
+  },
+  {
+    "task_id": "L1-03",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 3012.1954000000114,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "project-management",
+        "description": "project management module",
+        "entities": [
+          {
+            "name": "project",
+            "label": "Project",
+            "pluralLabel": "Projects",
+            "description": "Manage projects with timeline and priority",
+            "fields": [
+              {
+                "name": "title",
+                "label": "Title",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Low",
+                  "Medium",
+                  "High",
+                  "Critical"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "projects_table",
+            "label": "Projects",
+            "entity": "project",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "title",
+                "priority",
+                "start_date",
+                "end_date"
+              ]
+            }
+          },
+          {
+            "name": "project_form",
+            "label": "Project Form",
+            "entity": "project",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "title",
+                "description",
+                "start_date",
+                "end_date",
+                "priority"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Projects",
+            "icon": "folder",
+            "view": "projects_table"
+          }
+        ]
+      },
+      "moduleId": "8ad92e66-91d0-410a-aec1-dd785f3bb9bd",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1100,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2985.1708000000217
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2985.1708000000217
+    ]
+  },
+  {
+    "task_id": "L1-03",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 3233.643400000001,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "project-management",
+        "description": "project management module",
+        "entities": [
+          {
+            "name": "project",
+            "label": "Project",
+            "pluralLabel": "Projects",
+            "description": "Manage projects with timeline and priority",
+            "fields": [
+              {
+                "name": "title",
+                "label": "Title",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Low",
+                  "Medium",
+                  "High",
+                  "Critical"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "projects_table",
+            "label": "Projects",
+            "entity": "project",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "title",
+                "priority",
+                "start_date",
+                "end_date"
+              ]
+            }
+          },
+          {
+            "name": "project_form",
+            "label": "Project Form",
+            "entity": "project",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "title",
+                "description",
+                "start_date",
+                "end_date",
+                "priority"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Projects",
+            "icon": "folder",
+            "view": "projects_table"
+          }
+        ]
+      },
+      "moduleId": "7ac3524c-c86f-4cf8-81c0-dbe772ee09df",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1100,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3207.450599999982
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3207.450599999982
+    ]
+  },
+  {
+    "task_id": "L1-03",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 2558.1738999999943,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "project-management",
+        "description": "project management module",
+        "entities": [
+          {
+            "name": "project",
+            "label": "Project",
+            "pluralLabel": "Projects",
+            "description": "Manage projects with timeline and priority",
+            "fields": [
+              {
+                "name": "title",
+                "label": "Title",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Low",
+                  "Medium",
+                  "High",
+                  "Critical"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "projects_table",
+            "label": "Projects",
+            "entity": "project",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "title",
+                "priority",
+                "start_date",
+                "end_date"
+              ]
+            }
+          },
+          {
+            "name": "project_form",
+            "label": "Project Form",
+            "entity": "project",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "title",
+                "description",
+                "start_date",
+                "end_date",
+                "priority"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Projects",
+            "icon": "folder",
+            "view": "projects_table"
+          }
+        ]
+      },
+      "moduleId": "7e60c92a-3866-4c71-9a53-c527930314ac",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1100,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2534.6914000000106
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2534.6914000000106
+    ]
+  },
+  {
+    "task_id": "L1-03",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 2693.4410999999964,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "project-management",
+        "description": "project management module",
+        "entities": [
+          {
+            "name": "project",
+            "label": "Project",
+            "pluralLabel": "Projects",
+            "description": "Manage projects with timeline and priority",
+            "fields": [
+              {
+                "name": "title",
+                "label": "Title",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Low",
+                  "Medium",
+                  "High",
+                  "Critical"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "projects_table",
+            "label": "Projects",
+            "entity": "project",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "title",
+                "priority",
+                "start_date",
+                "end_date"
+              ]
+            }
+          },
+          {
+            "name": "project_form",
+            "label": "Project Form",
+            "entity": "project",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "title",
+                "description",
+                "start_date",
+                "end_date",
+                "priority"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Projects",
+            "icon": "folder",
+            "view": "projects_table"
+          }
+        ]
+      },
+      "moduleId": "ba035e62-3609-47a0-b28d-5c30eea12fb4",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1100,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2672.3684999999823
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2672.3684999999823
+    ]
+  },
+  {
+    "task_id": "L1-04",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 8693.176099999997,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "employee-management",
+        "description": "employee management module",
+        "entities": [
+          {
+            "name": "employee",
+            "label": "Employee",
+            "pluralLabel": "Employees",
+            "description": "Company employee records",
+            "fields": [
+              {
+                "name": "full_name",
+                "label": "Full Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "department",
+                "label": "Department",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Engineering",
+                  "Sales",
+                  "Marketing",
+                  "Operations",
+                  "HR"
+                ]
+              },
+              {
+                "name": "hire_date",
+                "label": "Hire Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "salary",
+                "label": "Salary",
+                "type": "currency",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "employee_table",
+            "label": "Employees",
+            "entity": "employee",
+            "layout": {
+              "type": "table"
+            }
+          },
+          {
+            "name": "employee_form",
+            "label": "Employee Form",
+            "entity": "employee",
+            "layout": {
+              "type": "form"
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Employees",
+            "icon": "users",
+            "view": "employee_table"
+          }
+        ]
+      },
+      "moduleId": "73faf950-982c-49f5-a928-4624934a34b2",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2907,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2738.6785999999847,
+          4416.041900000011
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2738.6785999999847,
+      4416.041900000011
+    ]
+  },
+  {
+    "task_id": "L1-04",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 6508.182799999995,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "employee-management",
+        "description": "employee management module",
+        "entities": [
+          {
+            "name": "employee",
+            "label": "Employee",
+            "pluralLabel": "Employees",
+            "description": "Company employee records",
+            "fields": [
+              {
+                "name": "full_name",
+                "label": "Full Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "department",
+                "label": "Department",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Engineering",
+                  "Sales",
+                  "Marketing",
+                  "Operations",
+                  "HR"
+                ]
+              },
+              {
+                "name": "hire_date",
+                "label": "Hire Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "salary",
+                "label": "Salary",
+                "type": "currency",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "employee_table",
+            "label": "Employees",
+            "entity": "employee",
+            "layout": {
+              "type": "table"
+            }
+          },
+          {
+            "name": "employee_form",
+            "label": "Employee Form",
+            "entity": "employee",
+            "layout": {
+              "type": "form"
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Employees",
+            "icon": "users",
+            "view": "employee_table"
+          }
+        ]
+      },
+      "moduleId": "803a55b7-d3c5-4a87-a47e-91877d7c0fd6",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2907,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2595.6054000000004,
+          2377.5578000000096
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2595.6054000000004,
+      2377.5578000000096
+    ]
+  },
+  {
+    "task_id": "L1-04",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 7700.754000000001,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "employee-management",
+        "description": "employee management module",
+        "entities": [
+          {
+            "name": "employee",
+            "label": "Employee",
+            "pluralLabel": "Employees",
+            "description": "Company employee records",
+            "fields": [
+              {
+                "name": "full_name",
+                "label": "Full Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "department",
+                "label": "Department",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Engineering",
+                  "Sales",
+                  "Marketing",
+                  "Operations",
+                  "HR"
+                ]
+              },
+              {
+                "name": "hire_date",
+                "label": "Hire Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "salary",
+                "label": "Salary",
+                "type": "currency",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "employee_table",
+            "label": "Employees",
+            "entity": "employee",
+            "layout": {
+              "type": "table"
+            }
+          },
+          {
+            "name": "employee_form",
+            "label": "Employee Form",
+            "entity": "employee",
+            "layout": {
+              "type": "form"
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Employees",
+            "icon": "users",
+            "view": "employee_table"
+          }
+        ]
+      },
+      "moduleId": "13370d91-b1fc-4e2c-83f3-f5b35b259e82",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2907,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3813.4312999999966,
+          2362.2329000000027
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3813.4312999999966,
+      2362.2329000000027
+    ]
+  },
+  {
+    "task_id": "L1-04",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 7289.01430000001,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "employee-management",
+        "description": "employee management module",
+        "entities": [
+          {
+            "name": "employee",
+            "label": "Employee",
+            "pluralLabel": "Employees",
+            "description": "Company employee records",
+            "fields": [
+              {
+                "name": "full_name",
+                "label": "Full Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "department",
+                "label": "Department",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Engineering",
+                  "Sales",
+                  "Marketing",
+                  "Operations",
+                  "HR"
+                ]
+              },
+              {
+                "name": "hire_date",
+                "label": "Hire Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "salary",
+                "label": "Salary",
+                "type": "currency",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "employee_table",
+            "label": "Employees",
+            "entity": "employee",
+            "layout": {
+              "type": "table"
+            }
+          },
+          {
+            "name": "employee_form",
+            "label": "Employee Form",
+            "entity": "employee",
+            "layout": {
+              "type": "form"
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Employees",
+            "icon": "users",
+            "view": "employee_table"
+          }
+        ]
+      },
+      "moduleId": "9172d17b-cf77-4520-b148-ef46f34f75b8",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2907,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3443.4442999999737,
+          2314.295299999998
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3443.4442999999737,
+      2314.295299999998
+    ]
+  },
+  {
+    "task_id": "L1-04",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 7497.44690000001,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "employee-management",
+        "description": "employee management module",
+        "entities": [
+          {
+            "name": "employee",
+            "label": "Employee",
+            "pluralLabel": "Employees",
+            "description": "Company employee records",
+            "fields": [
+              {
+                "name": "full_name",
+                "label": "Full Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true
+              },
+              {
+                "name": "department",
+                "label": "Department",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Engineering",
+                  "Sales",
+                  "Marketing",
+                  "Operations",
+                  "HR"
+                ]
+              },
+              {
+                "name": "hire_date",
+                "label": "Hire Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "salary",
+                "label": "Salary",
+                "type": "currency",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "employee_table",
+            "label": "Employees",
+            "entity": "employee",
+            "layout": {
+              "type": "table"
+            }
+          },
+          {
+            "name": "employee_form",
+            "label": "Employee Form",
+            "entity": "employee",
+            "layout": {
+              "type": "form"
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Employees",
+            "icon": "users",
+            "view": "employee_table"
+          }
+        ]
+      },
+      "moduleId": "fc6a5819-ba2d-4b10-b57c-ce89ee3678ce",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 2907,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          2570.8125999999465,
+          3392.350299999991
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      2570.8125999999465,
+      3392.350299999991
+    ]
+  },
+  {
+    "task_id": "L1-05",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 3455.463400000008,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "product-management",
+        "description": "product management module",
+        "entities": [
+          {
+            "name": "product",
+            "label": "Product",
+            "pluralLabel": "Products",
+            "description": "Product catalog with SKU and pricing",
+            "fields": [
+              {
+                "name": "sku",
+                "label": "SKU",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique product identifier"
+              },
+              {
+                "name": "product_name",
+                "label": "Product Name",
+                "type": "text",
+                "required": true,
+                "description": "Product display name"
+              },
+              {
+                "name": "category",
+                "label": "Category",
+                "type": "select",
+                "required": true,
+                "description": "Product category",
+                "options": [
+                  "Electronics",
+                  "Furniture",
+                  "Software",
+                  "Services"
+                ]
+              },
+              {
+                "name": "unit_price",
+                "label": "Unit Price",
+                "type": "currency",
+                "required": true,
+                "description": "Price per unit"
+              },
+              {
+                "name": "in_stock",
+                "label": "In Stock",
+                "type": "boolean",
+                "required": true,
+                "description": "Availability status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "product_table",
+            "label": "Products",
+            "entity": "product",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          },
+          {
+            "name": "product_form",
+            "label": "Product Form",
+            "entity": "product",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Products",
+            "icon": "package",
+            "view": "product_table"
+          }
+        ]
+      },
+      "moduleId": "780c98c4-d354-4f3a-ac6c-3b0008d02af2",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1169,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3417.1719000000157
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3417.1719000000157
+    ]
+  },
+  {
+    "task_id": "L1-05",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 2850.825899999996,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "product-management",
+        "description": "product management module",
+        "entities": [
+          {
+            "name": "product",
+            "label": "Product",
+            "pluralLabel": "Products",
+            "description": "Product catalog with SKU and pricing",
+            "fields": [
+              {
+                "name": "sku",
+                "label": "SKU",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique product identifier"
+              },
+              {
+                "name": "product_name",
+                "label": "Product Name",
+                "type": "text",
+                "required": true,
+                "description": "Product display name"
+              },
+              {
+                "name": "category",
+                "label": "Category",
+                "type": "select",
+                "required": true,
+                "description": "Product category",
+                "options": [
+                  "Electronics",
+                  "Furniture",
+                  "Software",
+                  "Services"
+                ]
+              },
+              {
+                "name": "unit_price",
+                "label": "Unit Price",
+                "type": "currency",
+                "required": true,
+                "description": "Price per unit"
+              },
+              {
+                "name": "in_stock",
+                "label": "In Stock",
+                "type": "boolean",
+                "required": true,
+                "description": "Availability status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "product_table",
+            "label": "Products",
+            "entity": "product",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          },
+          {
+            "name": "product_form",
+            "label": "Product Form",
+            "entity": "product",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Products",
+            "icon": "package",
+            "view": "product_table"
+          }
+        ]
+      },
+      "moduleId": "644d2347-9379-444a-bca7-8477b7da6bbf",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1169,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2833.119000000006
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2833.119000000006
+    ]
+  },
+  {
+    "task_id": "L1-05",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 2850.6369000000122,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "product-management",
+        "description": "product management module",
+        "entities": [
+          {
+            "name": "product",
+            "label": "Product",
+            "pluralLabel": "Products",
+            "description": "Product catalog with SKU and pricing",
+            "fields": [
+              {
+                "name": "sku",
+                "label": "SKU",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique product identifier"
+              },
+              {
+                "name": "product_name",
+                "label": "Product Name",
+                "type": "text",
+                "required": true,
+                "description": "Product display name"
+              },
+              {
+                "name": "category",
+                "label": "Category",
+                "type": "select",
+                "required": true,
+                "description": "Product category",
+                "options": [
+                  "Electronics",
+                  "Furniture",
+                  "Software",
+                  "Services"
+                ]
+              },
+              {
+                "name": "unit_price",
+                "label": "Unit Price",
+                "type": "currency",
+                "required": true,
+                "description": "Price per unit"
+              },
+              {
+                "name": "in_stock",
+                "label": "In Stock",
+                "type": "boolean",
+                "required": true,
+                "description": "Availability status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "product_table",
+            "label": "Products",
+            "entity": "product",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          },
+          {
+            "name": "product_form",
+            "label": "Product Form",
+            "entity": "product",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Products",
+            "icon": "package",
+            "view": "product_table"
+          }
+        ]
+      },
+      "moduleId": "e6d4277b-b5cd-48f1-b7c5-d5ebf0125efe",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1169,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2818.9043999999994
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2818.9043999999994
+    ]
+  },
+  {
+    "task_id": "L1-05",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 3118.945800000016,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "product-management",
+        "description": "product management module",
+        "entities": [
+          {
+            "name": "product",
+            "label": "Product",
+            "pluralLabel": "Products",
+            "description": "Product catalog with SKU and pricing",
+            "fields": [
+              {
+                "name": "sku",
+                "label": "SKU",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique product identifier"
+              },
+              {
+                "name": "product_name",
+                "label": "Product Name",
+                "type": "text",
+                "required": true,
+                "description": "Product display name"
+              },
+              {
+                "name": "category",
+                "label": "Category",
+                "type": "select",
+                "required": true,
+                "description": "Product category",
+                "options": [
+                  "Electronics",
+                  "Furniture",
+                  "Software",
+                  "Services"
+                ]
+              },
+              {
+                "name": "unit_price",
+                "label": "Unit Price",
+                "type": "currency",
+                "required": true,
+                "description": "Price per unit"
+              },
+              {
+                "name": "in_stock",
+                "label": "In Stock",
+                "type": "boolean",
+                "required": true,
+                "description": "Availability status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "product_table",
+            "label": "Products",
+            "entity": "product",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          },
+          {
+            "name": "product_form",
+            "label": "Product Form",
+            "entity": "product",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Products",
+            "icon": "package",
+            "view": "product_table"
+          }
+        ]
+      },
+      "moduleId": "65f20411-36fb-4e2f-a456-7744621ed113",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1169,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3104.482699999993
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3104.482699999993
+    ]
+  },
+  {
+    "task_id": "L1-05",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 2754.1281000000017,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "product-management",
+        "description": "product management module",
+        "entities": [
+          {
+            "name": "product",
+            "label": "Product",
+            "pluralLabel": "Products",
+            "description": "Product catalog with SKU and pricing",
+            "fields": [
+              {
+                "name": "sku",
+                "label": "SKU",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique product identifier"
+              },
+              {
+                "name": "product_name",
+                "label": "Product Name",
+                "type": "text",
+                "required": true,
+                "description": "Product display name"
+              },
+              {
+                "name": "category",
+                "label": "Category",
+                "type": "select",
+                "required": true,
+                "description": "Product category",
+                "options": [
+                  "Electronics",
+                  "Furniture",
+                  "Software",
+                  "Services"
+                ]
+              },
+              {
+                "name": "unit_price",
+                "label": "Unit Price",
+                "type": "currency",
+                "required": true,
+                "description": "Price per unit"
+              },
+              {
+                "name": "in_stock",
+                "label": "In Stock",
+                "type": "boolean",
+                "required": true,
+                "description": "Availability status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "product_table",
+            "label": "Products",
+            "entity": "product",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          },
+          {
+            "name": "product_form",
+            "label": "Product Form",
+            "entity": "product",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "sku",
+                "product_name",
+                "category",
+                "unit_price",
+                "in_stock"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Products",
+            "icon": "package",
+            "view": "product_table"
+          }
+        ]
+      },
+      "moduleId": "5afca3b5-c6eb-42b4-a44e-03c1c92738d9",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1169,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2728.126600000018
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2728.126600000018
+    ]
+  },
+  {
+    "task_id": "L1-06",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 3449.8446000000113,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "ticket-management",
+        "description": "ticket management module",
+        "entities": [
+          {
+            "name": "ticket",
+            "label": "Ticket",
+            "pluralLabel": "Tickets",
+            "description": "Support ticket tracking system",
+            "fields": [
+              {
+                "name": "subject",
+                "label": "Subject",
+                "type": "text",
+                "required": true,
+                "description": "Ticket subject line"
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false,
+                "description": "Detailed ticket description"
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": true,
+                "description": "Ticket priority level",
+                "options": [
+                  "P1",
+                  "P2",
+                  "P3",
+                  "P4"
+                ]
+              },
+              {
+                "name": "channel",
+                "label": "Channel",
+                "type": "select",
+                "required": true,
+                "description": "Communication channel",
+                "options": [
+                  "Email",
+                  "Phone",
+                  "Chat",
+                  "Portal"
+                ]
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "description": "Current ticket status",
+                "options": [
+                  "Open",
+                  "In Progress",
+                  "Resolved",
+                  "Closed"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "ticket_table",
+            "label": "All Tickets",
+            "entity": "ticket",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "subject",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "ticket_form",
+            "label": "Ticket Form",
+            "entity": "ticket",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "subject",
+                "description",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Tickets",
+            "icon": "ticket",
+            "view": "ticket_table"
+          }
+        ]
+      },
+      "moduleId": "d9ef0ab1-4f40-40aa-8630-68f11fd50897",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1200,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3431.1094000000157
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3431.1094000000157
+    ]
+  },
+  {
+    "task_id": "L1-06",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 2891.3125,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "ticket-management",
+        "description": "ticket management module",
+        "entities": [
+          {
+            "name": "ticket",
+            "label": "Ticket",
+            "pluralLabel": "Tickets",
+            "description": "Support ticket tracking system",
+            "fields": [
+              {
+                "name": "subject",
+                "label": "Subject",
+                "type": "text",
+                "required": true,
+                "description": "Ticket subject line"
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false,
+                "description": "Detailed ticket description"
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": true,
+                "description": "Ticket priority level",
+                "options": [
+                  "P1",
+                  "P2",
+                  "P3",
+                  "P4"
+                ]
+              },
+              {
+                "name": "channel",
+                "label": "Channel",
+                "type": "select",
+                "required": true,
+                "description": "Communication channel",
+                "options": [
+                  "Email",
+                  "Phone",
+                  "Chat",
+                  "Portal"
+                ]
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "description": "Current ticket status",
+                "options": [
+                  "Open",
+                  "In Progress",
+                  "Resolved",
+                  "Closed"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "ticket_table",
+            "label": "All Tickets",
+            "entity": "ticket",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "subject",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "ticket_form",
+            "label": "Ticket Form",
+            "entity": "ticket",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "subject",
+                "description",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Tickets",
+            "icon": "ticket",
+            "view": "ticket_table"
+          }
+        ]
+      },
+      "moduleId": "93703c7a-ed83-4b2c-a563-a344044a6a9b",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1200,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2863.431600000011
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2863.431600000011
+    ]
+  },
+  {
+    "task_id": "L1-06",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 3280.6162000000186,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "ticket-management",
+        "description": "ticket management module",
+        "entities": [
+          {
+            "name": "ticket",
+            "label": "Ticket",
+            "pluralLabel": "Tickets",
+            "description": "Support ticket tracking system",
+            "fields": [
+              {
+                "name": "subject",
+                "label": "Subject",
+                "type": "text",
+                "required": true,
+                "description": "Ticket subject line"
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false,
+                "description": "Detailed ticket description"
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": true,
+                "description": "Ticket priority level",
+                "options": [
+                  "P1",
+                  "P2",
+                  "P3",
+                  "P4"
+                ]
+              },
+              {
+                "name": "channel",
+                "label": "Channel",
+                "type": "select",
+                "required": true,
+                "description": "Communication channel",
+                "options": [
+                  "Email",
+                  "Phone",
+                  "Chat",
+                  "Portal"
+                ]
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "description": "Current ticket status",
+                "options": [
+                  "Open",
+                  "In Progress",
+                  "Resolved",
+                  "Closed"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "ticket_table",
+            "label": "All Tickets",
+            "entity": "ticket",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "subject",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "ticket_form",
+            "label": "Ticket Form",
+            "entity": "ticket",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "subject",
+                "description",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Tickets",
+            "icon": "ticket",
+            "view": "ticket_table"
+          }
+        ]
+      },
+      "moduleId": "52023ab4-9d9d-4fba-8249-ab40795bee68",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1200,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3255.971499999985
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3255.971499999985
+    ]
+  },
+  {
+    "task_id": "L1-06",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 2847.889199999976,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "ticket-management",
+        "description": "ticket management module",
+        "entities": [
+          {
+            "name": "ticket",
+            "label": "Ticket",
+            "pluralLabel": "Tickets",
+            "description": "Support ticket tracking system",
+            "fields": [
+              {
+                "name": "subject",
+                "label": "Subject",
+                "type": "text",
+                "required": true,
+                "description": "Ticket subject line"
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false,
+                "description": "Detailed ticket description"
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": true,
+                "description": "Ticket priority level",
+                "options": [
+                  "P1",
+                  "P2",
+                  "P3",
+                  "P4"
+                ]
+              },
+              {
+                "name": "channel",
+                "label": "Channel",
+                "type": "select",
+                "required": true,
+                "description": "Communication channel",
+                "options": [
+                  "Email",
+                  "Phone",
+                  "Chat",
+                  "Portal"
+                ]
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "description": "Current ticket status",
+                "options": [
+                  "Open",
+                  "In Progress",
+                  "Resolved",
+                  "Closed"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "ticket_table",
+            "label": "All Tickets",
+            "entity": "ticket",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "subject",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "ticket_form",
+            "label": "Ticket Form",
+            "entity": "ticket",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "subject",
+                "description",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Tickets",
+            "icon": "ticket",
+            "view": "ticket_table"
+          }
+        ]
+      },
+      "moduleId": "7a2b55fb-315e-479b-9351-3b730750e895",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1200,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2830.06329999998
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2830.06329999998
+    ]
+  },
+  {
+    "task_id": "L1-06",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 2860.4043999999994,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "ticket-management",
+        "description": "ticket management module",
+        "entities": [
+          {
+            "name": "ticket",
+            "label": "Ticket",
+            "pluralLabel": "Tickets",
+            "description": "Support ticket tracking system",
+            "fields": [
+              {
+                "name": "subject",
+                "label": "Subject",
+                "type": "text",
+                "required": true,
+                "description": "Ticket subject line"
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "rich-text",
+                "required": false,
+                "description": "Detailed ticket description"
+              },
+              {
+                "name": "priority",
+                "label": "Priority",
+                "type": "select",
+                "required": true,
+                "description": "Ticket priority level",
+                "options": [
+                  "P1",
+                  "P2",
+                  "P3",
+                  "P4"
+                ]
+              },
+              {
+                "name": "channel",
+                "label": "Channel",
+                "type": "select",
+                "required": true,
+                "description": "Communication channel",
+                "options": [
+                  "Email",
+                  "Phone",
+                  "Chat",
+                  "Portal"
+                ]
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "description": "Current ticket status",
+                "options": [
+                  "Open",
+                  "In Progress",
+                  "Resolved",
+                  "Closed"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "ticket_table",
+            "label": "All Tickets",
+            "entity": "ticket",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "subject",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "ticket_form",
+            "label": "Ticket Form",
+            "entity": "ticket",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "subject",
+                "description",
+                "priority",
+                "channel",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Tickets",
+            "icon": "ticket",
+            "view": "ticket_table"
+          }
+        ]
+      },
+      "moduleId": "c58ca3ef-ac69-4422-a181-98c8a3f29139",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1200,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2841.332400000014
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2841.332400000014
+    ]
+  },
+  {
+    "task_id": "L1-07",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 7752.212299999985,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "contact-management",
+        "description": "contact management module",
+        "entities": [
+          {
+            "name": "contact",
+            "label": "Contact",
+            "pluralLabel": "Contacts",
+            "description": "Customer contact information and preferences",
+            "fields": [
+              {
+                "name": "first_name",
+                "label": "First Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "last_name",
+                "label": "Last Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": true,
+                "validation": {
+                  "pattern": "^\\+?[1-9]\\d{1,14}$",
+                  "message": "International format required"
+                }
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true,
+                "validation": {
+                  "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                  "message": "Valid email required"
+                }
+              },
+              {
+                "name": "preferred_language",
+                "label": "Preferred Language",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "EN",
+                  "ES",
+                  "FR",
+                  "DE",
+                  "PT"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "contact_table",
+            "label": "Contacts Table",
+            "entity": "contact",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          },
+          {
+            "name": "contact_form",
+            "label": "Contact Form",
+            "entity": "contact",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Contacts",
+            "icon": "users",
+            "view": "contact_table"
+          }
+        ]
+      },
+      "moduleId": "0ec4f5b2-7294-4a4c-abc7-194fd2eb787d",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 3132,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3000.0793000000413,
+          3229.761600000027
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3000.0793000000413,
+      3229.761600000027
+    ]
+  },
+  {
+    "task_id": "L1-07",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 8289.457699999999,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "contact-management",
+        "description": "contact management module",
+        "entities": [
+          {
+            "name": "contact",
+            "label": "Contact",
+            "pluralLabel": "Contacts",
+            "description": "Customer contact information and preferences",
+            "fields": [
+              {
+                "name": "first_name",
+                "label": "First Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "last_name",
+                "label": "Last Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": true,
+                "validation": {
+                  "pattern": "^\\+?[1-9]\\d{1,14}$",
+                  "message": "International format required"
+                }
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true,
+                "validation": {
+                  "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                  "message": "Valid email required"
+                }
+              },
+              {
+                "name": "preferred_language",
+                "label": "Preferred Language",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "EN",
+                  "ES",
+                  "FR",
+                  "DE",
+                  "PT"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "contact_table",
+            "label": "Contacts Table",
+            "entity": "contact",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          },
+          {
+            "name": "contact_form",
+            "label": "Contact Form",
+            "entity": "contact",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Contacts",
+            "icon": "users",
+            "view": "contact_table"
+          }
+        ]
+      },
+      "moduleId": "475fdef7-7aa8-4f5d-b55d-1e866d6c5781",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 3132,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3886.6179999999586,
+          2869.9425000000047
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3886.6179999999586,
+      2869.9425000000047
+    ]
+  },
+  {
+    "task_id": "L1-07",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 10237.526199999993,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "contact-management",
+        "description": "contact management module",
+        "entities": [
+          {
+            "name": "contact",
+            "label": "Contact",
+            "pluralLabel": "Contacts",
+            "description": "Customer contact information and preferences",
+            "fields": [
+              {
+                "name": "first_name",
+                "label": "First Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "last_name",
+                "label": "Last Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": true,
+                "validation": {
+                  "pattern": "^\\+?[1-9]\\d{1,14}$",
+                  "message": "International format required"
+                }
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true,
+                "validation": {
+                  "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                  "message": "Valid email required"
+                }
+              },
+              {
+                "name": "preferred_language",
+                "label": "Preferred Language",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "EN",
+                  "ES",
+                  "FR",
+                  "DE",
+                  "PT"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "contact_table",
+            "label": "Contacts Table",
+            "entity": "contact",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          },
+          {
+            "name": "contact_form",
+            "label": "Contact Form",
+            "entity": "contact",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Contacts",
+            "icon": "users",
+            "view": "contact_table"
+          }
+        ]
+      },
+      "moduleId": "765f6dd0-255e-466f-aa62-ca5ce5e78a91",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 3132,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3077.5383000000147,
+          5635.7572999999975
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3077.5383000000147,
+      5635.7572999999975
+    ]
+  },
+  {
+    "task_id": "L1-07",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 12251.562000000005,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "contact-management",
+        "description": "contact management module",
+        "entities": [
+          {
+            "name": "contact",
+            "label": "Contact",
+            "pluralLabel": "Contacts",
+            "description": "Customer contact information and preferences",
+            "fields": [
+              {
+                "name": "first_name",
+                "label": "First Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "last_name",
+                "label": "Last Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": true,
+                "validation": {
+                  "pattern": "^\\+?[1-9]\\d{1,14}$",
+                  "message": "International format required"
+                }
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true,
+                "validation": {
+                  "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                  "message": "Valid email required"
+                }
+              },
+              {
+                "name": "preferred_language",
+                "label": "Preferred Language",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "EN",
+                  "ES",
+                  "FR",
+                  "DE",
+                  "PT"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "contact_table",
+            "label": "Contacts Table",
+            "entity": "contact",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          },
+          {
+            "name": "contact_form",
+            "label": "Contact Form",
+            "entity": "contact",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Contacts",
+            "icon": "users",
+            "view": "contact_table"
+          }
+        ]
+      },
+      "moduleId": "d7d74b7a-26d8-4a1a-9904-9458ee52f36e",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 3132,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3054.564299999969,
+          7668.371299999999
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3054.564299999969,
+      7668.371299999999
+    ]
+  },
+  {
+    "task_id": "L1-07",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 7885.135999999999,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "contact-management",
+        "description": "contact management module",
+        "entities": [
+          {
+            "name": "contact",
+            "label": "Contact",
+            "pluralLabel": "Contacts",
+            "description": "Customer contact information and preferences",
+            "fields": [
+              {
+                "name": "first_name",
+                "label": "First Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "last_name",
+                "label": "Last Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "phone",
+                "label": "Phone",
+                "type": "phone",
+                "required": true,
+                "validation": {
+                  "pattern": "^\\+?[1-9]\\d{1,14}$",
+                  "message": "International format required"
+                }
+              },
+              {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "required": true,
+                "validation": {
+                  "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                  "message": "Valid email required"
+                }
+              },
+              {
+                "name": "preferred_language",
+                "label": "Preferred Language",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "EN",
+                  "ES",
+                  "FR",
+                  "DE",
+                  "PT"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "contact_table",
+            "label": "Contacts Table",
+            "entity": "contact",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          },
+          {
+            "name": "contact_form",
+            "label": "Contact Form",
+            "entity": "contact",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "preferred_language"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Contacts",
+            "icon": "users",
+            "view": "contact_table"
+          }
+        ]
+      },
+      "moduleId": "734bcfc4-ee10-459f-b5f3-125686cf0108",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 3132,
+      "metadata": {
+        "attemptsUsed": 2,
+        "selfCorrected": true,
+        "attemptTimingsMs": [
+          3236.6066000000574,
+          3118.7232000000076
+        ]
+      }
+    },
+    "attempts_used": 2,
+    "self_corrected": true,
+    "attempt_timings_ms": [
+      3236.6066000000574,
+      3118.7232000000076
+    ]
+  },
+  {
+    "task_id": "L1-08",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 3802.831200000015,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "milestone-tracker",
+        "description": "milestone tracker module",
+        "entities": [
+          {
+            "name": "milestone",
+            "label": "Milestone",
+            "pluralLabel": "Milestones",
+            "description": "Track project milestones and progress",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "due_date",
+                "label": "Due Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Pending",
+                  "InProgress",
+                  "Completed",
+                  "Overdue"
+                ]
+              },
+              {
+                "name": "completion",
+                "label": "Completion",
+                "type": "percentage",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "milestone_table",
+            "label": "Milestones",
+            "entity": "milestone",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          },
+          {
+            "name": "milestone_form",
+            "label": "Milestone Form",
+            "entity": "milestone",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Milestones",
+            "icon": "flag",
+            "view": "milestone_table"
+          }
+        ]
+      },
+      "moduleId": "627ab9e2-2cbf-44d3-b6bf-aaf3a8bd37cc",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1065,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3786.88810000004
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3786.88810000004
+    ]
+  },
+  {
+    "task_id": "L1-08",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 5967.884499999986,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "milestone-tracker",
+        "description": "milestone tracker module",
+        "entities": [
+          {
+            "name": "milestone",
+            "label": "Milestone",
+            "pluralLabel": "Milestones",
+            "description": "Track project milestones and progress",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "due_date",
+                "label": "Due Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Pending",
+                  "InProgress",
+                  "Completed",
+                  "Overdue"
+                ]
+              },
+              {
+                "name": "completion",
+                "label": "Completion",
+                "type": "percentage",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "milestone_table",
+            "label": "Milestones",
+            "entity": "milestone",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          },
+          {
+            "name": "milestone_form",
+            "label": "Milestone Form",
+            "entity": "milestone",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Milestones",
+            "icon": "flag",
+            "view": "milestone_table"
+          }
+        ]
+      },
+      "moduleId": "dd13f08e-6104-4a09-86b3-103c26d8ab93",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1065,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          5951.307399999932
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      5951.307399999932
+    ]
+  },
+  {
+    "task_id": "L1-08",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 8556.496500000008,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "milestone-tracker",
+        "description": "milestone tracker module",
+        "entities": [
+          {
+            "name": "milestone",
+            "label": "Milestone",
+            "pluralLabel": "Milestones",
+            "description": "Track project milestones and progress",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "due_date",
+                "label": "Due Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Pending",
+                  "InProgress",
+                  "Completed",
+                  "Overdue"
+                ]
+              },
+              {
+                "name": "completion",
+                "label": "Completion",
+                "type": "percentage",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "milestone_table",
+            "label": "Milestones",
+            "entity": "milestone",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          },
+          {
+            "name": "milestone_form",
+            "label": "Milestone Form",
+            "entity": "milestone",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Milestones",
+            "icon": "flag",
+            "view": "milestone_table"
+          }
+        ]
+      },
+      "moduleId": "1962ca89-6363-4c42-be40-0f8b44c9dd81",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1065,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          8534.63439999998
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      8534.63439999998
+    ]
+  },
+  {
+    "task_id": "L1-08",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 2706.0195999999996,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "milestone-tracker",
+        "description": "milestone tracker module",
+        "entities": [
+          {
+            "name": "milestone",
+            "label": "Milestone",
+            "pluralLabel": "Milestones",
+            "description": "Track project milestones and progress",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "due_date",
+                "label": "Due Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Pending",
+                  "InProgress",
+                  "Completed",
+                  "Overdue"
+                ]
+              },
+              {
+                "name": "completion",
+                "label": "Completion",
+                "type": "percentage",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "milestone_table",
+            "label": "Milestones",
+            "entity": "milestone",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          },
+          {
+            "name": "milestone_form",
+            "label": "Milestone Form",
+            "entity": "milestone",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Milestones",
+            "icon": "flag",
+            "view": "milestone_table"
+          }
+        ]
+      },
+      "moduleId": "446506d1-1123-4618-a277-430a96434d15",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1065,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2657.290099999984
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2657.290099999984
+    ]
+  },
+  {
+    "task_id": "L1-08",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 2860.1684999999707,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "milestone-tracker",
+        "description": "milestone tracker module",
+        "entities": [
+          {
+            "name": "milestone",
+            "label": "Milestone",
+            "pluralLabel": "Milestones",
+            "description": "Track project milestones and progress",
+            "fields": [
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "due_date",
+                "label": "Due Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Pending",
+                  "InProgress",
+                  "Completed",
+                  "Overdue"
+                ]
+              },
+              {
+                "name": "completion",
+                "label": "Completion",
+                "type": "percentage",
+                "required": true
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "milestone_table",
+            "label": "Milestones",
+            "entity": "milestone",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          },
+          {
+            "name": "milestone_form",
+            "label": "Milestone Form",
+            "entity": "milestone",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "name",
+                "due_date",
+                "status",
+                "completion"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Milestones",
+            "icon": "flag",
+            "view": "milestone_table"
+          }
+        ]
+      },
+      "moduleId": "9161bc06-f408-43ed-b04f-4922a6eaca58",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1065,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2649.877499999944
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2649.877499999944
+    ]
+  },
+  {
+    "task_id": "L1-09",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 7544.820299999963,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "leave-management",
+        "description": "leave management module",
+        "entities": [
+          {
+            "name": "leave_request",
+            "label": "Leave Request",
+            "pluralLabel": "Leave Requests",
+            "description": "Employee leave request tracking",
+            "fields": [
+              {
+                "name": "employee_name",
+                "label": "Employee Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "leave_type",
+                "label": "Leave Type",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Vacation",
+                  "Sick",
+                  "Personal",
+                  "Parental"
+                ]
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "days_requested",
+                "label": "Days Requested",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "leave_request_table",
+            "label": "Leave Requests",
+            "entity": "leave_request",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "leave_request_form",
+            "label": "Leave Request Form",
+            "entity": "leave_request",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "95350b42-0dbc-4186-a194-c161e26a33b2",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1163,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          7526.551499999943
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      7526.551499999943
+    ]
+  },
+  {
+    "task_id": "L1-09",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 2918.8234999999986,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "leave-management",
+        "description": "leave management module",
+        "entities": [
+          {
+            "name": "leave_request",
+            "label": "Leave Request",
+            "pluralLabel": "Leave Requests",
+            "description": "Employee leave request tracking",
+            "fields": [
+              {
+                "name": "employee_name",
+                "label": "Employee Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "leave_type",
+                "label": "Leave Type",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Vacation",
+                  "Sick",
+                  "Personal",
+                  "Parental"
+                ]
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "days_requested",
+                "label": "Days Requested",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "leave_request_table",
+            "label": "Leave Requests",
+            "entity": "leave_request",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "leave_request_form",
+            "label": "Leave Request Form",
+            "entity": "leave_request",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "88eaa558-fa9e-4bba-8fe8-a164c0983990",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1163,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2899.388600000064
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2899.388600000064
+    ]
+  },
+  {
+    "task_id": "L1-09",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 9667.201399999962,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "leave-management",
+        "description": "leave management module",
+        "entities": [
+          {
+            "name": "leave_request",
+            "label": "Leave Request",
+            "pluralLabel": "Leave Requests",
+            "description": "Employee leave request tracking",
+            "fields": [
+              {
+                "name": "employee_name",
+                "label": "Employee Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "leave_type",
+                "label": "Leave Type",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Vacation",
+                  "Sick",
+                  "Personal",
+                  "Parental"
+                ]
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "days_requested",
+                "label": "Days Requested",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "leave_request_table",
+            "label": "Leave Requests",
+            "entity": "leave_request",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "leave_request_form",
+            "label": "Leave Request Form",
+            "entity": "leave_request",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "a037bca9-2342-4bab-b255-7e417b07591f",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1163,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          9650.489500000025
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      9650.489500000025
+    ]
+  },
+  {
+    "task_id": "L1-09",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 3236.016499999969,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "leave-management",
+        "description": "leave management module",
+        "entities": [
+          {
+            "name": "leave_request",
+            "label": "Leave Request",
+            "pluralLabel": "Leave Requests",
+            "description": "Employee leave request tracking",
+            "fields": [
+              {
+                "name": "employee_name",
+                "label": "Employee Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "leave_type",
+                "label": "Leave Type",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Vacation",
+                  "Sick",
+                  "Personal",
+                  "Parental"
+                ]
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "days_requested",
+                "label": "Days Requested",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "leave_request_table",
+            "label": "Leave Requests",
+            "entity": "leave_request",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "leave_request_form",
+            "label": "Leave Request Form",
+            "entity": "leave_request",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "3ef198b5-a97d-4b51-955b-09d2c0d7704e",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1163,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3222.375299999956
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3222.375299999956
+    ]
+  },
+  {
+    "task_id": "L1-09",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 3167.741299999994,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "leave-management",
+        "description": "leave management module",
+        "entities": [
+          {
+            "name": "leave_request",
+            "label": "Leave Request",
+            "pluralLabel": "Leave Requests",
+            "description": "Employee leave request tracking",
+            "fields": [
+              {
+                "name": "employee_name",
+                "label": "Employee Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "leave_type",
+                "label": "Leave Type",
+                "type": "select",
+                "required": true,
+                "options": [
+                  "Vacation",
+                  "Sick",
+                  "Personal",
+                  "Parental"
+                ]
+              },
+              {
+                "name": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "days_requested",
+                "label": "Days Requested",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "status",
+                "label": "Status",
+                "type": "select",
+                "required": false,
+                "options": [
+                  "Pending",
+                  "Approved",
+                  "Rejected"
+                ]
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "leave_request_table",
+            "label": "Leave Requests",
+            "entity": "leave_request",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          },
+          {
+            "name": "leave_request_form",
+            "label": "Leave Request Form",
+            "entity": "leave_request",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "employee_name",
+                "leave_type",
+                "start_date",
+                "end_date",
+                "days_requested",
+                "status"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "aaf417f6-1b25-42ac-b8ce-af723a9527f1",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1163,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3151.348999999929
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3151.348999999929
+    ]
+  },
+  {
+    "task_id": "L1-10",
+    "repetition_number": 1,
+    "http_status": 200,
+    "latency_ms": 3132.649800000014,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "warehouse-management",
+        "description": "warehouse management module",
+        "entities": [
+          {
+            "name": "warehouse",
+            "label": "Warehouse",
+            "pluralLabel": "Warehouses",
+            "description": "Warehouse locations and capacity management",
+            "fields": [
+              {
+                "name": "code",
+                "label": "Code",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique warehouse identifier"
+              },
+              {
+                "name": "city",
+                "label": "City",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse city location"
+              },
+              {
+                "name": "country",
+                "label": "Country",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse country location"
+              },
+              {
+                "name": "capacity",
+                "label": "Capacity",
+                "type": "number",
+                "required": true,
+                "description": "Storage capacity in units"
+              },
+              {
+                "name": "is_active",
+                "label": "Active",
+                "type": "boolean",
+                "required": true,
+                "description": "Warehouse operational status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "warehouse_table",
+            "label": "Warehouses",
+            "entity": "warehouse",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          },
+          {
+            "name": "warehouse_form",
+            "label": "Warehouse Form",
+            "entity": "warehouse",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Warehouses",
+            "icon": "building",
+            "view": "warehouse_table"
+          }
+        ]
+      },
+      "moduleId": "5ba27663-7dee-43b2-b3e4-bfe480432fa5",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1133,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3116.191200000001
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3116.191200000001
+    ]
+  },
+  {
+    "task_id": "L1-10",
+    "repetition_number": 2,
+    "http_status": 200,
+    "latency_ms": 2810.6737999999896,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "warehouse-management",
+        "description": "warehouse management module",
+        "entities": [
+          {
+            "name": "warehouse",
+            "label": "Warehouse",
+            "pluralLabel": "Warehouses",
+            "description": "Warehouse locations and capacity management",
+            "fields": [
+              {
+                "name": "code",
+                "label": "Code",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique warehouse identifier"
+              },
+              {
+                "name": "city",
+                "label": "City",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse city location"
+              },
+              {
+                "name": "country",
+                "label": "Country",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse country location"
+              },
+              {
+                "name": "capacity",
+                "label": "Capacity",
+                "type": "number",
+                "required": true,
+                "description": "Storage capacity in units"
+              },
+              {
+                "name": "is_active",
+                "label": "Active",
+                "type": "boolean",
+                "required": true,
+                "description": "Warehouse operational status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "warehouse_table",
+            "label": "Warehouses",
+            "entity": "warehouse",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          },
+          {
+            "name": "warehouse_form",
+            "label": "Warehouse Form",
+            "entity": "warehouse",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "3d1be1c6-7e44-4cab-86d1-647974da46d1",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1091,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          2794.2870999999577
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      2794.2870999999577
+    ]
+  },
+  {
+    "task_id": "L1-10",
+    "repetition_number": 3,
+    "http_status": 200,
+    "latency_ms": 3384.2356000000145,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "warehouse-management",
+        "description": "warehouse management module",
+        "entities": [
+          {
+            "name": "warehouse",
+            "label": "Warehouse",
+            "pluralLabel": "Warehouses",
+            "description": "Warehouse locations and capacity management",
+            "fields": [
+              {
+                "name": "code",
+                "label": "Code",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique warehouse identifier"
+              },
+              {
+                "name": "city",
+                "label": "City",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse city location"
+              },
+              {
+                "name": "country",
+                "label": "Country",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse country location"
+              },
+              {
+                "name": "capacity",
+                "label": "Capacity",
+                "type": "number",
+                "required": true,
+                "description": "Storage capacity in units"
+              },
+              {
+                "name": "is_active",
+                "label": "Active",
+                "type": "boolean",
+                "required": true,
+                "description": "Warehouse operational status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "warehouse_table",
+            "label": "Warehouses",
+            "entity": "warehouse",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          },
+          {
+            "name": "warehouse_form",
+            "label": "Warehouse Form",
+            "entity": "warehouse",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Warehouses",
+            "icon": "building",
+            "view": "warehouse_table"
+          }
+        ]
+      },
+      "moduleId": "9c1e25b4-77ce-490b-9d8b-38f3b4fed2bb",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1133,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3366.572999999975
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3366.572999999975
+    ]
+  },
+  {
+    "task_id": "L1-10",
+    "repetition_number": 4,
+    "http_status": 200,
+    "latency_ms": 4040.8714000000036,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "warehouse-management",
+        "description": "warehouse management module",
+        "entities": [
+          {
+            "name": "warehouse",
+            "label": "Warehouse",
+            "pluralLabel": "Warehouses",
+            "description": "Warehouse locations and capacity management",
+            "fields": [
+              {
+                "name": "code",
+                "label": "Code",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique warehouse identifier"
+              },
+              {
+                "name": "city",
+                "label": "City",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse city location"
+              },
+              {
+                "name": "country",
+                "label": "Country",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse country location"
+              },
+              {
+                "name": "capacity",
+                "label": "Capacity",
+                "type": "number",
+                "required": true,
+                "description": "Storage capacity in units"
+              },
+              {
+                "name": "is_active",
+                "label": "Active",
+                "type": "boolean",
+                "required": true,
+                "description": "Warehouse operational status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "warehouse_table",
+            "label": "Warehouses",
+            "entity": "warehouse",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          },
+          {
+            "name": "warehouse_form",
+            "label": "Warehouse Form",
+            "entity": "warehouse",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": []
+      },
+      "moduleId": "11a1e73d-d5eb-45af-8f25-5b1afe4a92a7",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1091,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          4026.250400000019
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      4026.250400000019
+    ]
+  },
+  {
+    "task_id": "L1-10",
+    "repetition_number": 5,
+    "http_status": 200,
+    "latency_ms": 3290.9658000000054,
+    "response_body": {
+      "success": true,
+      "schema": {
+        "version": "1.0.0",
+        "module": "warehouse-management",
+        "description": "warehouse management module",
+        "entities": [
+          {
+            "name": "warehouse",
+            "label": "Warehouse",
+            "pluralLabel": "Warehouses",
+            "description": "Warehouse locations and capacity management",
+            "fields": [
+              {
+                "name": "code",
+                "label": "Code",
+                "type": "text",
+                "required": true,
+                "unique": true,
+                "description": "Unique warehouse identifier"
+              },
+              {
+                "name": "city",
+                "label": "City",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse city location"
+              },
+              {
+                "name": "country",
+                "label": "Country",
+                "type": "text",
+                "required": true,
+                "description": "Warehouse country location"
+              },
+              {
+                "name": "capacity",
+                "label": "Capacity",
+                "type": "number",
+                "required": true,
+                "description": "Storage capacity in units"
+              },
+              {
+                "name": "is_active",
+                "label": "Active",
+                "type": "boolean",
+                "required": true,
+                "description": "Warehouse operational status"
+              }
+            ],
+            "timestamps": true,
+            "softDelete": true
+          }
+        ],
+        "views": [
+          {
+            "name": "warehouse_table",
+            "label": "Warehouses",
+            "entity": "warehouse",
+            "layout": {
+              "type": "table",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          },
+          {
+            "name": "warehouse_form",
+            "label": "Warehouse Form",
+            "entity": "warehouse",
+            "layout": {
+              "type": "form",
+              "columns": [
+                "code",
+                "city",
+                "country",
+                "capacity",
+                "is_active"
+              ]
+            }
+          }
+        ],
+        "actions": [],
+        "automations": [],
+        "navigation": [
+          {
+            "label": "Warehouses",
+            "icon": "building",
+            "view": "warehouse_table"
+          }
+        ]
+      },
+      "moduleId": "741467fe-1149-4dd0-af77-2cddc38f9b38",
+      "orgId": "e355254e-9d7c-45ec-8611-6de90f000628",
+      "tokensUsed": 1133,
+      "metadata": {
+        "attemptsUsed": 1,
+        "selfCorrected": false,
+        "attemptTimingsMs": [
+          3275.755899999989
+        ]
+      }
+    },
+    "attempts_used": 1,
+    "self_corrected": false,
+    "attempt_timings_ms": [
+      3275.755899999989
+    ]
+  }
+]

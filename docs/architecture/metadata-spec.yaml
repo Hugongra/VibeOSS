@@ -1,196 +1,675 @@
-# VibeOS — Vibe-JSON Metadata Specification v1.0.0
-# ============================================================
-# This document defines the standard for metadata schemas that
-# power the VibeOS platform. Every entity, view, and action in
-# the system is described by a Vibe-JSON document conforming to
-# this specification.
+# =============================================================================
+# Vibe-JSON Metadata Specification v1.0.0
+# =============================================================================
+#
+# Official reference for implementers of Vibe-JSON parsers, validators, and
+# compilers (the "Deterministic Compiler Shell"). A conforming document is a
+# single JSON object — the vibe_schema_v1 root envelope — with four required
+# blocks: entities, views, actions, and automations.
+#
+# Canonical on-the-wire types use snake_case string literals (e.g. "text",
+# "select"). Human-facing names (String, Enum, Currency) are aliases documented
+# below for thesis and tooling compatibility.
+#
+# Reference implementation: src/shared/schemas/vibe-schema-v1.ts (Zod)
+# =============================================================================
 
-vibeJson:
+spec:
+  id: vibe-json
   version: "1.0.0"
-  description: >
-    The Vibe-JSON standard is a declarative metadata format that
-    describes business applications. It serves as the single source
-    of truth for database structure, API behavior, and UI rendering.
+  status: stable
+  mediaType: application/vnd.vibe+json
+  rootEnvelope: vibe_schema_v1
 
-# ============================================================
-# Module Schema
-# ============================================================
+# -----------------------------------------------------------------------------
+# 1. Module metadata (root envelope)
+# -----------------------------------------------------------------------------
 module:
-  type: object
-  required: [version, module, description, entities, views]
+  description: >
+    Top-level object describing one deployable business module. Stored as JSONB
+    in vibe_modules.schema; dynamic records live in vibe_records.data (JSONB).
+
+  required:
+    - version
+    - module
+    - description
+    - entities
+    - views
+    - actions
+    - automations
+
   properties:
     version:
       type: string
+      format: semver
       pattern: "^\\d+\\.\\d+\\.\\d+$"
-      description: Semantic version of the module schema.
+      example: "1.0.0"
+      description: Schema specification version (must match spec.version).
 
     module:
       type: string
+      format: kebab-case
       pattern: "^[a-z][a-z0-9_-]*$"
-      description: Unique kebab-case identifier for the module.
+      example: solar-crm
+      description: Unique module identifier.
 
     description:
       type: string
-      description: Human-readable description of the module's purpose.
+      minLength: 1
+      description: Human-readable purpose of the module.
 
     entities:
       type: array
       minItems: 1
-      items:
-        $ref: "#/entity"
-      description: The data entities defined by this module.
+      items: { $ref: "#/entity" }
+      description: Data model definitions (tables / JSONB entity shapes).
 
     views:
       type: array
       minItems: 1
-      items:
-        $ref: "#/view"
-      description: UI views for displaying and interacting with entities.
+      items: { $ref: "#/view" }
+      description: Server-Driven UI (SDUI) view configurations.
+
+    actions:
+      type: array
+      description: >
+        Module-level actions (CRUD, export, etc.). May be empty [].
+        View-scoped actions may also appear under views[].actions.
+
+    automations:
+      type: array
+      description: >
+        Event-driven rules (trigger → condition → action). May be empty [].
 
     navigation:
       type: array
-      items:
-        type: object
-        properties:
-          label: { type: string }
-          icon: { type: string }
-          view: { type: string }
+      required: false
+      items: { $ref: "#/navigationItem" }
+      description: Optional sidebar / menu entries pointing to views.
 
-# ============================================================
-# Entity Schema
-# ============================================================
-entity:
-  type: object
-  required: [name, label, pluralLabel, description, fields, timestamps, softDelete]
-  properties:
-    name:
-      type: string
-      pattern: "^[a-z][a-z0-9_]*$"
-      description: snake_case identifier.
-    label: { type: string }
-    pluralLabel: { type: string }
-    description: { type: string }
-    icon: { type: string }
-    timestamps: { type: boolean }
-    softDelete: { type: boolean }
-    fields:
-      type: array
-      minItems: 1
-      items:
-        $ref: "#/field"
+# -----------------------------------------------------------------------------
+# 2. Field types
+# -----------------------------------------------------------------------------
+fieldTypes:
+  description: >
+    Every field declares a canonical `type` string. Parsers MUST reject unknown
+    types. Thesis / UI labels map to canonical types as follows.
 
-# ============================================================
-# Field Schema
-# ============================================================
+  canonicalToAlias:
+    text: [String, Text, ShortText]
+    rich-text: [LongText, TextArea]
+    email: [Email]
+    number: [Number, Integer, Float]
+    currency: [Currency, Money]
+    percentage: [Percentage, Percent]
+    boolean: [Boolean, Bool]
+    date: [Date, DateISO]          # ISO 8601 date (YYYY-MM-DD)
+    datetime: [DateTime, Timestamp]
+    select: [Enum, SingleSelect]   # requires options[]
+    multi-select: [MultiEnum, MultiSelect]
+    relation: [Relation, ForeignKey, Reference]
+    # Regex: use type "text" (or "email") with validation.pattern, OR type "regex"
+    regex: [Regex, Pattern]
+    # Extended types supported by VibeOS runtime (optional for minimal parsers)
+    url: [URL, Link]
+    phone: [Phone, Tel]
+    file: [File, Attachment]
+    json: [JSON, Object]
+
+  enum:
+    - text
+    - rich-text
+    - email
+    - number
+    - currency
+    - percentage
+    - boolean
+    - date
+    - datetime
+    - select
+    - multi-select
+    - relation
+    - regex
+    - url
+    - phone
+    - file
+    - json
+
 field:
   type: object
   required: [name, label, type, required]
+
   properties:
     name:
       type: string
       pattern: "^[a-z][a-z0-9_]*$"
-    label: { type: string }
-    type:
+      description: snake_case field name; keys in vibe_records.data JSONB.
+
+    label:
       type: string
-      enum:
-        - text
-        - number
-        - boolean
-        - date
-        - datetime
-        - email
-        - url
-        - phone
-        - currency
-        - percentage
-        - select
-        - multi-select
-        - relation
-        - file
-        - rich-text
-        - json
-    required: { type: boolean }
-    unique: { type: boolean }
-    defaultValue: {}
-    description: { type: string }
+      description: Display label for forms and tables.
+
+    type:
+      $ref: "#/fieldTypes/enum"
+      description: Canonical field type (see fieldTypes.canonicalToAlias).
+
+    required:
+      type: boolean
+      description: Whether the field must be present on create.
+
+    unique:
+      type: boolean
+      description: Logical uniqueness constraint (enforced by application layer).
+
+    defaultValue:
+      description: Default when creating a record (type must match field type).
+
+    description:
+      type: string
+      description: Help text shown in SDUI forms.
+
+  # --- Enum (select / multi-select) ---
     options:
       type: array
       items: { type: string }
-    relation:
-      type: object
-      properties:
-        entity: { type: string }
-        field: { type: string }
-        type:
-          type: string
-          enum: [one-to-one, one-to-many, many-to-many]
+      minItems: 1
+      appliesWhen:
+        type: [select, multi-select]
+      description: >
+        Allowed values for Enum fields. REQUIRED when type is select or
+        multi-select.
+
+  # --- Regex ---
     validation:
+      $ref: "#/fieldValidation"
+      description: >
+        For Regex fields: set type to "regex" OR type "text"/"email" with
+        validation.pattern (ECMAScript regex string). Other constraints
+        (min, max, min_length, max_length) apply to numeric and string types.
+
+  # --- Relations (see relationshipTypes) ---
+    relation:
+      $ref: "#/relation"
+
+# -----------------------------------------------------------------------------
+# Field-level validation constraints
+# -----------------------------------------------------------------------------
+fieldValidation:
+  description: >
+    Zod-compatible rules embedded on fields. Cross-field rules use
+    entity.constraints (custom) — see constraints section.
+
+  properties:
+    min:
+      type: number
+      description: Minimum numeric value (number, currency, percentage).
+
+    max:
+      type: number
+      description: Maximum numeric value.
+
+    min_length:
+      type: integer
+      minimum: 0
+      description: Minimum string length.
+
+    max_length:
+      type: integer
+      minimum: 1
+      description: Maximum string length.
+
+    pattern:
+      type: string
+      description: >
+        Regular expression (Regex constraint). Used for email-like fields or
+        explicit Regex type.
+
+    message:
+      type: string
+      description: Error message when validation fails.
+
+  impliedConstraints:
+    required:
+      description: >
+        Field.required: true — value must be non-null on create/update.
+      scope: field
+
+# -----------------------------------------------------------------------------
+# 3. Relationship types
+# -----------------------------------------------------------------------------
+relationshipTypes:
+  description: >
+    Declared on fields with type: relation. The `relation` object describes
+    cardinality and persistence hints for implementers (ORM / JSONB).
+
+  cardinality:
+    one-to-one:
+      alias: [1:1]
+      description: Single related record per parent.
+
+    one-to-many:
+      alias: [1:N, OneToMany]
+      description: >
+        Parent has many children. Child holds foreign key (relation.field on
+        child entity pointing to parent id).
+      foreignKey:
+        on: childEntity
+        references: parentEntity.id
+        field: string          # FK column / JSONB key on child
+      cascade:
+        onDelete: [restrict, cascade, set_null]
+        onUpdate: [restrict, cascade]
+        default: { onDelete: restrict }
+
+    many-to-many:
+      alias: [M:N, ManyToMany]
+      description: >
+        Associative / junction table between two entities.
+      junctionTable:
+        name: string           # e.g. account_solar_lead
+        required: true
+        columns:
+          - { name: left_id, references: entityA.id }
+          - { name: right_id, references: entityB.id }
+        uniqueConstraint: [left_id, right_id]
+      cascade:
+        onDelete: [restrict, cascade]
+        description: Applies to junction rows when parent is deleted.
+
+  relationObject:
+    required: [entity, field, type]
+    properties:
+      entity:
+        type: string
+        description: Target entity name (snake_case).
+
+      field:
+        type: string
+        description: >
+          FK field name on the owning side, or junction link field name for M:N.
+
+      type:
+        enum: [one-to-one, one-to-many, many-to-many]
+
+      cascadeDelete:
+        type: boolean
+        description: >
+          When true, map to onDelete: cascade (1:N / M:N). Optional shorthand;
+          parsers may normalize to cascade.onDelete.
+
+      junction:
+        type: object
+        appliesWhen:
+          type: many-to-many
+        properties:
+          table: { type: string }
+          leftKey: { type: string }
+          rightKey: { type: string }
+
+relation:
+  $ref: "#/relationshipTypes/relationObject"
+
+# -----------------------------------------------------------------------------
+# Entity
+# -----------------------------------------------------------------------------
+entity:
+  type: object
+  required: [name, label, pluralLabel, description, fields, timestamps, softDelete]
+
+  properties:
+    name:
+      type: string
+      pattern: "^[a-z][a-z0-9_]*$"
+
+    label: { type: string }
+    pluralLabel: { type: string }
+    description: { type: string }
+    icon: { type: string, required: false }
+    timestamps:
+      type: boolean
+      description: Include created_at / updated_at in persistence layer.
+    softDelete:
+      type: boolean
+      description: Use is_deleted flag instead of hard delete.
+
+    fields:
+      type: array
+      minItems: 1
+      items: { $ref: "#/field" }
+
+    constraints:
+      type: array
+      required: false
+      items: { $ref: "#/customConstraint" }
+      description: >
+        Cross-field (custom) validation enforced at mutation time after schema
+        validity (CE layer). Example: status cannot be Closed-Won if revenue is zero.
+
+# -----------------------------------------------------------------------------
+# Custom / cross-field constraints
+# -----------------------------------------------------------------------------
+customConstraint:
+  description: >
+    Declarative business rules beyond single-field Zod checks. Parsers SHOULD
+    compile these into runtime validators (see constraint-enforcement).
+
+  properties:
+    id:
+      type: string
+      description: Stable rule identifier.
+
+    when:
       type: object
+      required: [field, equals]
       properties:
-        min: { type: number }
-        max: { type: number }
-        pattern: { type: string }
+        field: { type: string }
+        equals: { description: Trigger value (e.g. Closed-Won) }
+
+    then:
+      type: object
+      required: [field]
+      properties:
+        field: { type: string }
+        required: { type: boolean, default: true }
+        min: { type: number, description: e.g. revenue > 0 }
         message: { type: string }
 
-# ============================================================
-# View Schema
-# ============================================================
+  example:
+    id: closed_won_requires_revenue
+    when: { field: status, equals: Closed-Won }
+    then: { field: revenue, min: 0.01, message: Revenue required for Closed-Won }
+
+# -----------------------------------------------------------------------------
+# 4. View types (SDUI)
+# -----------------------------------------------------------------------------
+viewTypes:
+  description: >
+    Each view binds to one entity and declares a layout. Parsers MUST ensure
+    view.entity references an existing entity name.
+
+  supported:
+    table:
+      description: Tabular listing with sortable/filterable columns.
+      layout:
+        required: [type, columns]
+        properties:
+          type: { const: table }
+          columns:
+            type: array
+            items: { type: string }
+            description: Field names to display (must exist on entity).
+          filters: { $ref: "#/filter" }
+          sorting: { $ref: "#/sorting" }
+          pageSize: { type: integer, minimum: 1 }
+
+    form:
+      description: Create/edit form with per-field SDUI widget mapping.
+      layout:
+        required: [type]
+        properties:
+          type: { const: form }
+          fieldMappings:
+            type: array
+            required: false
+            description: >
+              Optional explicit widget overrides. If omitted, infer from field
+              type (String→text-input, Enum→select, Currency→number-input,
+              Date→date-picker).
+            items:
+              type: object
+              properties:
+                field: { type: string }
+                component: { type: string }
+
+    detail:
+      description: Read-only single-record layout with grouped sections.
+      layout:
+        required: [type]
+        properties:
+          type: { const: detail }
+          sections:
+            type: array
+            minItems: 1
+            items:
+              type: object
+              properties:
+                title: { type: string }
+                fields:
+                  type: array
+                  items: { type: string }
+
+    # Extended SDUI layouts (VibeOS runtime)
+    card: { description: Visual card grid }
+    list: { description: Simple list }
+    kanban: { description: Board; requires layout.groupBy }
+    chart: { description: Data visualization }
+    stat: { description: KPI / metric tile }
+    custom: { description: Plugin-defined renderer }
+
 view:
   type: object
   required: [name, label, entity, layout]
+
   properties:
     name: { type: string }
     label: { type: string }
-    entity: { type: string }
+    entity:
+      type: string
+      description: snake_case entity name this view displays.
+
     layout:
       type: object
       required: [type]
-      properties:
-        type:
-          type: string
-          enum: [table, form, detail, card, list, kanban, chart, stat, custom]
-        columns:
-          type: array
-          items: { type: string }
-        filters:
-          type: array
-          items:
-            type: object
-            properties:
-              field: { type: string }
-              operator:
-                type: string
-                enum: [eq, neq, gt, lt, gte, lte, contains, in]
-              value: {}
-        sorting:
-          type: array
-          items:
-            type: object
-            properties:
-              field: { type: string }
-              direction:
-                type: string
-                enum: [asc, desc]
-        groupBy: { type: string }
-        pageSize: { type: integer }
+      description: Discriminated by layout.type — see viewTypes.
+
     actions:
       type: array
-      items:
-        $ref: "#/action"
+      items: { $ref: "#/action" }
+      description: View-scoped actions (may omit targetEntity; defaults to view.entity).
 
-# ============================================================
-# Action Schema
-# ============================================================
+filter:
+  properties:
+    field: { type: string }
+    operator:
+      enum: [eq, neq, gt, lt, gte, lte, contains, in]
+    value: {}
+
+sorting:
+  properties:
+    field: { type: string }
+    direction: { enum: [asc, desc] }
+
+# -----------------------------------------------------------------------------
+# 5. Action types
+# -----------------------------------------------------------------------------
+actionTypes:
+  description: >
+    User-triggered or system-triggered operations. CRUD actions at module level
+    MUST include targetEntity.
+
+  core:
+    - create
+    - update
+    - delete
+    - export
+
+  extended:
+    - navigate
+    - import
+    - notify
+    - approve
+    - reject
+    - transition
+    - webhook
+    - custom
+
 action:
   type: object
   required: [name, label, type]
+
   properties:
     name: { type: string }
     label: { type: string }
     type:
-      type: string
-      enum: [create, update, delete, navigate, webhook, custom]
+      enum:
+        - create
+        - update
+        - delete
+        - export
+        - import
+        - navigate
+        - notify
+        - approve
+        - reject
+        - transition
+        - webhook
+        - custom
+
     icon: { type: string }
     confirmation: { type: string }
-    targetEntity: { type: string }
-    targetUrl: { type: string }
+    targetEntity:
+      type: string
+      description: REQUIRED for module-level create, update, delete, export.
+    targetUrl:
+      type: string
+      description: For navigate / webhook targets.
+
+    transition:
+      type: object
+      appliesWhen: { type: transition }
+      properties:
+        field: { type: string }
+        to: { type: string }
+
+    notification:
+      type: object
+      appliesWhen: { type: notify }
+      properties:
+        channel: { enum: [email, slack, teams, in_app] }
+        template: { type: string }
+        recipients: { type: string }
+
+# -----------------------------------------------------------------------------
+# 6–7. Automations (trigger → condition → action)
+# -----------------------------------------------------------------------------
+automationTriggers:
+  description: When an automation rule is evaluated.
+
+  enum:
+    - on_create      # After record insert
+    - on_update      # After record update
+    - on_delete      # Before or after delete (implementation-defined)
+    - on_field_change # When watchField changes
+    - on_schedule    # Cron / scheduled job (future)
+    - manual         # Explicit invocation
+
+automation:
+  type: object
+  required: [name, label, entity, trigger, actions]
+
+  properties:
+    name: { type: string }
+    label: { type: string }
+    entity:
+      type: string
+      description: Entity this automation applies to.
+
+    trigger:
+      $ref: "#/automationTriggers/enum"
+
+    watchField:
+      type: string
+      requiredWhen: { trigger: on_field_change }
+      description: Field to watch for on_field_change triggers.
+
+    condition:
+      type: object
+      required: false
+      description: >
+        Optional gate — automation runs only if the record matches.
+        Structure: field + operator + value (same operators as view filters).
+      properties:
+        field: { type: string }
+        operator:
+          enum: [eq, neq, gt, lt, gte, lte, contains, in]
+        value: {}
+
+    actions:
+      type: array
+      minItems: 1
+      items: { $ref: "#/action" }
+      description: >
+        Actions executed when trigger fires and condition passes.
+        Pipeline: trigger → condition? → actions[]
+
+  pipeline:
+    - step: trigger
+      description: Event source (on_create, on_update, …)
+    - step: condition
+      optional: true
+      description: Filter record state
+    - step: action
+      description: One or more actions (notify, transition, webhook, …)
+
+# -----------------------------------------------------------------------------
+# Navigation
+# -----------------------------------------------------------------------------
+navigationItem:
+  properties:
+    label: { type: string }
+    icon: { type: string }
+    view: { type: string, description: Must reference views[].name }
+
+# -----------------------------------------------------------------------------
+# Parser conformance checklist
+# -----------------------------------------------------------------------------
+conformance:
+  layers:
+  - id: SV
+    name: Schema Validity
+    description: Root envelope passes Zod / JSON Schema validation.
+
+  - id: DBI
+    name: Database Integrity
+    description: >
+      Entities map to JSONB storage (vibe_records.data) with entity_name;
+      module schema stored in vibe_modules.schema (jsonb).
+
+  - id: URC
+    name: UI Render Completeness
+    description: Every field type maps to an SDUI component for form views.
+
+  - id: CE
+    name: Constraint Enforcement
+    description: >
+      entity.constraints and field.validation enforced on mutations.
+
+  minimalValidDocument:
+    description: Example shape (abbreviated)
+    example:
+      version: "1.0.0"
+      module: example-module
+      description: Example
+      entities:
+        - name: example_entity
+          label: Example
+          pluralLabel: Examples
+          description: "..."
+          timestamps: true
+          softDelete: true
+          fields:
+            - name: title
+              label: Title
+              type: text
+              required: true
+      views:
+        - name: example_table
+          label: Examples
+          entity: example_entity
+          layout: { type: table, columns: [title] }
+        - name: example_form
+          label: New Example
+          entity: example_entity
+          layout: { type: form }
+      actions: []
+      automations: []

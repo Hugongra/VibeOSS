@@ -15,6 +15,8 @@
 
 ![VibeOS landing page — compile intent into applications](docs/images/homepage-screenshot.png)
 
+![VEEF v2.0 ablation study — pipeline component contributions](docs/images/veef-ablation-screenshot.png)
+
 </div>
 
 > **Academic Context:** This repository is the functional prototype developed as part of the Bachelor Thesis (TFG) *"Developing and Evaluating a Functional Prototype of an Agentic AI Programmer for Enterprise Software"* at La Salle - Universitat Ramon Llull (Barcelona, 2025-2026). It serves as empirical evidence for the research findings presented in the thesis. The comparative claims below (e.g., "10x Faster Than Salesforce") represent the architectural vision of the project and are contextualized with empirical data in the academic document. See the [/tfg](./tfg) directory for the thesis.

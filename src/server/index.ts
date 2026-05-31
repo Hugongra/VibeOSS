@@ -18,12 +18,18 @@ import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
 
 import { handleVibeRequest, getVibeInfo } from "./api/vibe";
-import { executeAction, type ActionContext } from "@/lib/engine/action-executor";
-import { processAutomations, type AutomationEvent } from "@/lib/engine/automation-engine";
-import { parseVibeSchema } from "@/lib/kernel/vibe-parser";
-import { providerRegistry } from "@/lib/providers/registry";
+import { executeAction, type ActionContext } from "./engine/action-executor";
+import { processAutomations, type AutomationEvent } from "./engine/automation-engine";
+import { parseVibeSchema } from "./kernel/vibe-parser";
+import { providerRegistry } from "./providers/registry";
 
 const app = new Hono();
+
+app.onError((err, c) => {
+  console.error("[VibeOS API]", err);
+  const message = err instanceof Error ? err.message : "Internal server error";
+  return c.json({ error: message }, 500);
+});
 
 /* ------------------------------------------------------------------ */
 /*  Middleware                                                         */
@@ -54,9 +60,15 @@ app.get("/api/vibe", (c) => {
 });
 
 app.post("/api/vibe", async (c) => {
-  const body = await c.req.json();
-  const result = await handleVibeRequest(body);
-  return c.json(result.body, result.status as 200);
+  try {
+    const body = await c.req.json();
+    const result = await handleVibeRequest(body);
+    return c.json(result.body, result.status as 200);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Internal server error";
+    console.error("[VibeOS API] POST /api/vibe failed:", error);
+    return c.json({ error: message }, 500);
+  }
 });
 
 /* ------------------------------------------------------------------ */
@@ -145,12 +157,41 @@ app.get("/", (c) => {
 
 const port = Number(process.env.PORT ?? 3001);
 
-serve({ fetch: app.fetch, port }, (info) => {
+const server = serve({ fetch: app.fetch, port }, (info) => {
   console.log(`\n  VibeOS API Server running on http://localhost:${info.port}`);
   console.log(`  Intent API:      POST http://localhost:${info.port}/api/vibe`);
   console.log(`  Action Executor: POST http://localhost:${info.port}/api/vibe/execute`);
   console.log(`  Automations:     POST http://localhost:${info.port}/api/vibe/automate`);
   console.log(`  Providers:       GET  http://localhost:${info.port}/api/vibe/providers\n`);
+});
+
+function shutdownServer(): Promise<void> {
+  return new Promise((resolve) => {
+    server.close(() => resolve());
+  });
+}
+
+// Graceful shutdown — prevents EADDRINUSE when node --watch restarts the file
+for (const sig of ["SIGTERM", "SIGINT", "SIGHUP"] as const) {
+  process.on(sig, () => {
+    void shutdownServer().then(() => process.exit(0));
+  });
+}
+
+process.on("beforeExit", () => {
+  server.close();
+});
+
+server.on("error", (err: NodeJS.ErrnoException) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(
+      `\n  Port ${port} is already in use. Stop other dev:server instances:\n` +
+        `    npx kill-port ${port}\n` +
+        `  Then run: npm run dev:server\n`
+    );
+    process.exit(1);
+  }
+  throw err;
 });
 
 export default app;
