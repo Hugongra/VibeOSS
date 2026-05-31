@@ -1,41 +1,45 @@
 %% VibeOS — System Flow Diagram
 %% Pipeline: Intent → Schema → UI
-%% 
-%% This diagram illustrates the core data flow of the VibeOS platform,
-%% from natural language input to a fully rendered application.
 
 graph TB
-    subgraph User["🧑 User Layer"]
+    subgraph User["User Layer"]
         A[Natural Language Intent]
-        B[VibeOS Dashboard]
+        B[VibeOS Dashboard / Builder]
     end
 
-    subgraph Kernel["🧠 Kernel (The Brain)"]
-        C[Schema Generator<br/><i>Vercel AI SDK + GPT-4o</i>]
-        D[Vibe Parser<br/><i>JSON Interpretation</i>]
-        E[Validator<br/><i>Zod Schema Validation</i>]
+    subgraph Kernel["Kernel — Deterministic Compiler Shell"]
+        C[Schema Generator<br/>Vercel AI SDK + Haiku 4.5]
+        N[normalizeLlmModule]
+        E[Zod Validator<br/>vibe_schema_v1]
+        D[Vibe Parser]
     end
 
-    subgraph API["⚡ API Layer"]
-        F["/api/vibe<br/><i>Intent-Based Routing</i>"]
+    subgraph API["API Layer"]
+        F["/api/vibe<br/>Intent-Based Routing"]
     end
 
-    subgraph Data["🗄️ Persistence Layer"]
-        G[PostgreSQL<br/><i>Core Tables (Users, Orgs)</i>]
-        H[JSONB Storage<br/><i>Dynamic Entity Records</i>]
-        I[Vibe Modules Table<br/><i>Schema Registry</i>]
+    subgraph Data["Persistence Layer"]
+        G[PostgreSQL]
+        H[vibe_records JSONB]
+        I[vibe_modules JSONB]
     end
 
-    subgraph UI["🎨 Server-Driven UI"]
-        J[Renderer Engine<br/><i>Component Selection</i>]
-        K[Component Factory<br/><i>Table / Form / Card / Detail</i>]
-        L[Rendered Application<br/><i>Next.js Server Components</i>]
+    subgraph Engine["Runtime Engine"]
+        X[Action Executor]
+        Y[Automation Engine]
+        P[Providers: Email · Slack · Webhook]
     end
 
-    %% Flow
+    subgraph UI["Server-Driven UI — React 19"]
+        J[Renderer Engine]
+        K[Component Factory<br/>Table / Form / Detail / Card]
+        L[Rendered Application]
+    end
+
     A -->|"Describe what you want"| F
     F -->|"intent: generate"| C
-    C -->|"Raw Vibe-JSON"| E
+    C -->|"Raw JSON"| N
+    N -->|"Normalized"| E
     E -->|"Validated Schema"| D
     D -->|"Runtime Module"| I
     I -->|"Stored Schema"| H
@@ -44,24 +48,25 @@ graph TB
     F -->|"intent: query"| H
     H -->|"JSONB Records"| J
     I -->|"View + Entity Schema"| J
-    J -->|"Select Component"| K
-    K -->|"Hydrated UI"| L
-    L -->|"Server-Rendered HTML"| B
+    J --> K --> L --> B
 
-    %% Mutation flow
     B -->|"Create/Update Record"| F
     F -->|"intent: mutate"| E
     E -->|"Validated Data"| H
 
-    %% Styling
+    I --> X --> P
+    I --> Y --> P
+
     classDef userStyle fill:#6d5cff,stroke:#5a4dd4,color:#fff
     classDef kernelStyle fill:#1a1a2e,stroke:#6d5cff,color:#fafafa
     classDef apiStyle fill:#0f3460,stroke:#6d5cff,color:#fafafa
     classDef dataStyle fill:#16213e,stroke:#6d5cff,color:#fafafa
     classDef uiStyle fill:#0f3460,stroke:#a78bfa,color:#fafafa
+    classDef engineStyle fill:#16213e,stroke:#a78bfa,color:#fafafa
 
     class A,B userStyle
-    class C,D,E kernelStyle
+    class C,N,E,D kernelStyle
     class F apiStyle
     class G,H,I dataStyle
     class J,K,L uiStyle
+    class X,Y,P engineStyle

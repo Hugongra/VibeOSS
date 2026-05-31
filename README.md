@@ -45,6 +45,10 @@ This is the **Vibe Coding** paradigm: metadata as the universal interface betwee
 
 ## Architecture
 
+![VibeOS system architecture — Intent to SDUI pipeline](docs/images/architecture-diagram.png)
+
+The **Deterministic Compiler Shell** (kernel) sits between the LLM and the runtime. Raw model output never passes Zod validation alone (0% DVR in VEEF ablation); the pipeline combines **normalization**, **validation**, and **ReAct self-correction** to reach **74.8% DVR**.
+
 ```
 Intent (Natural Language)
         │
@@ -53,11 +57,16 @@ Intent (Natural Language)
 │  Schema Generator │  ← Vercel AI SDK + Claude Haiku 4.5
 │  (LLM Compiler)  │     + Recursive Self-Correction (≤3 attempts)
 └────────┬────────┘
+         │ raw JSON
+         ▼
+┌─────────────────┐
+│ normalizeLlmModule│  ← Deterministic structural fixes (+21.7 pp)
+└────────┬────────┘
          │ vibe_schema_v1
          ▼
 ┌─────────────────┐
 │    Validator     │  ← Zod (Deterministic Compiler Shell)
-│  (Safety Net)    │     errors fed back to LLM on retry
+│  (Safety Net)    │     semantic errors fed back to LLM on retry
 └────────┬────────┘
          │ Validated Schema
          ▼
@@ -80,13 +89,15 @@ Intent (Natural Language)
          │
          ▼
 ┌─────────────────┐
-│  SDUI Renderer  │  ← Server-Driven UI Engine
-│ (Component Factory)│
+│  SDUI Renderer  │  ← Server-Driven UI Engine (React 19)
+│ (Component Factory)│   Table · Form · Detail · Card
 └────────┬────────┘
-         │ React Components
+         │
          ▼
     Rendered App
 ```
+
+Source diagram: [`docs/images/architecture-diagram.svg`](docs/images/architecture-diagram.svg) · Flow spec: [`docs/architecture/system-flow.mermaid`](docs/architecture/system-flow.mermaid)
 
 ---
 
@@ -97,11 +108,11 @@ Intent (Natural Language)
 - **Language:** TypeScript (strict mode, no `any`)
 - **Database:** PostgreSQL with JSONB for dynamic entities (works with **Supabase**)
 - **ORM:** Drizzle ORM
-- **AI:** Vercel AI SDK — **OpenRouter** (default: `google/gemini-2.0-flash-001`) or Anthropic direct; set `OPENROUTER_API_KEY` or `ANTHROPIC_API_KEY` in `.env.local`
+- **AI:** Vercel AI SDK — **Anthropic Claude Haiku 4.5** (default) or OpenRouter; set `ANTHROPIC_API_KEY` or `OPENROUTER_API_KEY` in `.env.local`
 - **Validation:** Zod (`vibe_schema_v1` in `src/shared/schemas/`)
 - **Providers:** Email (Resend), Webhook (HTTP), Slack
 - **UI:** Shadcn/UI + Tailwind CSS v4
-- **Design:** Dark-mode first, Linear.app aesthetic
+- **Testing:** Vitest (kernel unit tests + VEEF verification)
 
 ---
 
@@ -117,25 +128,35 @@ vibeoss/
 │   │   ├── main.tsx            # Bootstrap
 │   │   ├── App.tsx             # Router + layout
 │   │   ├── index.css           # Global styles
-│   │   ├── pages/              # Home, Builder, auth…
+│   │   ├── pages/              # Home, Builder, Docs, auth…
 │   │   ├── components/         # UI + vibe-ui (SDUI)
-│   │   └── lib/                # Client helpers (e.g. auth context)
+│   │   └── lib/                # Client helpers (auth, vibe-api)
 │   ├── server/                 # Hono API + kernel + engine (Node)
 │   │   ├── index.ts            # HTTP server + CORS + routes
 │   │   ├── lib.ts              # Barrel re-exports for consumers
 │   │   ├── api/vibe.ts         # Intent handler (generate, validate, …)
-│   │   ├── kernel/             # Parser, schema generator, self-correction, record validator
+│   │   ├── kernel/             # Parser, schema generator, self-correction, tests
 │   │   ├── engine/             # Actions + automations
 │   │   ├── providers/          # Email, Slack, webhook…
 │   │   └── database/           # Drizzle, vibe-storage, migrations (Postgres / Supabase)
 │   └── shared/                 # Types + Zod schemas (client + server)
 ├── scripts/
-│   ├── run-benchmark.ts        # VEEF thesis benchmark (T1–T5 × 10 reps)
+│   ├── veef-v2-tasks.json      # VEEF v2 benchmark tasks (L1/L2/L3)
+│   ├── run-benchmark.ts        # Full pipeline benchmark (23 tasks × 5 reps)
+│   ├── run-baseline.ts         # Raw LLM baseline (Zod only)
+│   ├── run-baseline-fewshot.ts # Few-shot ablation
+│   ├── run-baseline-normalize.ts # Normalize ablation
 │   └── benchmark-prompts.json
+├── results/
+│   ├── benchmark-results-v2.json # Full pipeline results
+│   ├── baseline-results.json   # Raw baseline
+│   └── progression-analysis.md # Ablation comparison (Tables 10–11)
 ├── docs/
 │   ├── architecture/
 │   │   ├── metadata-spec.yaml
-│   │   └── system-flow.mermaid
+│   │   ├── system-flow.mermaid
+│   │   └── ../images/architecture-diagram.svg
+│   ├── images/                 # README screenshots + architecture diagram
 │   └── examples/
 │       └── crm-vibe-schema-v1.json
 ├── tfg/                        # Academic thesis
@@ -314,11 +335,21 @@ For each `intent: "generate"` request, the API logs **`[VEEF Telemetry]`**:
 - **`t_dep`**: PostgreSQL persist duration (`vibe_modules` insert)
 - **`self_correction_attempts`**: e.g. `2 (self-corrected)`
 
-**Thesis benchmark** (5 prompts T1–T5 × 10 repetitions → `results/benchmark-results.json`):
+**Thesis benchmark** (VEEF v2 — 23 tasks × 5 repetitions → `results/benchmark-results-v2.json`):
 
 ```bash
 npm run benchmark
 ```
+
+**Ablation baselines** (isolate pipeline components):
+
+```bash
+npm run baseline              # Raw LLM → Zod (0% DVR)
+npm run baseline:fewshot      # + few-shot examples (56.5% DVR)
+npm run baseline:normalize    # + normalizeLlmModule (21.7% DVR)
+```
+
+See [`results/progression-analysis.md`](results/progression-analysis.md) for Tables 10–11 and incremental delta analysis.
 
 Records per run: `attempts_used`, `self_corrected`, `attempt_timings_ms`, HTTP status, latency. Env: `BENCHMARK_BASE_URL`, `BENCHMARK_REQUEST_TIMEOUT_MS`, `SCHEMA_GENERATOR_MAX_RETRIES`.
 
@@ -374,7 +405,18 @@ This document describes entities, views, actions, and automations that drive the
 
 VibeOS includes a measurable evaluation harness for the thesis: **Schema Validity (SV)**, **Database Integrity (DBI)**, **UI Render Consistency (URC)**, and **Constraint Enforcement (CE)**.
 
-The benchmark suite runs tasks **T1–T5** (schema generation, UI mapping, relations, constraints, E2E module) **10 times each** with `temperature: 0` and logs generation, validation, persistence, and self-correction metrics.
+The VEEF v2 suite runs **23 tasks** across three complexity levels (**L1** Atomic, **L2** Relational, **L3** End-to-End), **5 repetitions each** (115 runs), with `temperature: 0`.
+
+### Empirical results (Haiku 4.5)
+
+| Condition | L1 DVR | L2 DVR | L3 DVR | Total DVR |
+|-----------|--------|--------|--------|-----------|
+| Raw (no pipeline) | 0.0% | 0.0% | 0.0% | **0.0%** |
+| Raw + Few-Shot | 100.0% | 37.5% | 0.0% | **56.5%** |
+| Raw + Normalize | 20.0% | 37.5% | 0.0% | **21.7%** |
+| **VibeOS Complete** | **92.0%** | **62.5%** | **60.0%** | **74.8%** |
+
+The **+53.1 pp** delta between Normalize-only and VibeOS Complete is attributable to the **ReAct self-correction loop** — the only component that enables L3 generation.
 
 ### Run the benchmark
 
@@ -382,15 +424,20 @@ The benchmark suite runs tasks **T1–T5** (schema generation, UI mapping, relat
 # Terminal 1 — API must be running with ANTHROPIC_API_KEY + DATABASE_URL
 npm run dev:server
 
-# Terminal 2
+# Terminal 2 — full pipeline
 npm run benchmark
+
+# Ablation baselines (direct LLM, no API server needed)
+npm run baseline
+npm run baseline:fewshot
+npm run baseline:normalize
 ```
 
-Results are written to **`results/benchmark-results.json`**. Summary includes **DVR** (2xx rate per task), **self-correction rate**, and mean attempts per task.
+Results: **`results/benchmark-results-v2.json`** (pipeline) · **`results/progression-analysis.md`** (ablation analysis)
 
 ```bash
-npm run test          # 22 unit tests (Zod, normalization, self-correction mocks)
-npm run benchmark:veef  # alternate 5×10 sweep with Markdown table output
+npm run test          # Kernel unit tests (Zod, normalization, self-correction)
+npm run benchmark:veef  # alternate sweep with Markdown table output
 ```
 
 ---
